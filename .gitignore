@@ -1,7 +1,9 @@
-*.aux
-*.log
-*.out
-*.gz
-*.fls
-*.fdb_latexmk
+**.aux
+**.log
+**.out
+**.gz
+**.fls
+**.toc
+**.fdb_latexmk
 main.pdf
+report.pdf

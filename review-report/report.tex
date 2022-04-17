@@ -1,0 +1,73 @@
+\documentclass{reportFormat}
+
+\projectName{Dragon-Fly: Vehicle Surveillance system}
+\guideName{Dr. Rafeeque P.C}
+
+\addGrpMember{Abhinand C}{05}
+\addGrpMember{Edwin Jose George}{27}
+\addGrpMember{Lavanya E.V}{32}
+\addGrpMember{Shilpa Suresh}{50}
+
+\setTimePeriod{3 March 2022}{13 April 2022}
+
+\renewcommand{\baselinestretch}{2}
+\begin{document}
+	\section*{Introduction}
+	DragonFly is an AI based project that aims to re-identify and track vehicles across various camera feeds. The user provides the system with vehicle descriptions such as color, make, model, location, time-period etc. The system then finds corresponding match by making use of various AI techniques. The system then finds the path followed by the said vehicle along with the detected frame at each camera points.
+	
+	\section*{Works done so far}
+	
+	\subsection*{AI model}
+	\begin{itemize}
+		\item Experimented with Classical Object detection algorithms - OpenCV Haar Model for identifying Car and Bus.
+		\item Trying out various tutorials from TensorFlow community. Forked various GitHub repo and ran on few target video stream.
+		
+		\item Learning and exploring various terminologies such as image classification, localization, detection, segmentation etc. Looked into previous models and algorithms such as HOG, SIFT, CNN, R-CNN and its variations, SSD, YOLO etc. Referred to various articles, youtube videos. Few of the record are saved at \url{https://docs.google.com/presentation/d/1ugCdqNADQ1QNd91lMP4BmbFBKYhkMoDrN2yIf_t7SkI/edit?usp=sharing}
+		
+		\item Working on YOLOv4 with deepsorting - Cloned the repo "theAIGuysCode/YOLOv4-deepsort" \\
+		Deepsort is able to track object in one camera feed. Generated tracking video using the yolov4-deepsort, using pretrained weight download from darkNet.
+		
+		\item Downloaded and labeled indian vehicles (identified 9 classes) in YOLOv4 format using labelImg tool. Tried to train the 500+233 images. The model failed to detect. The training was performed using darkNet as the framework.
+
+		
+	\end{itemize}
+
+	\subsection*{UI/UX interface}
+	\begin{itemize}
+		\item Worked on map API and research in the topic taking out GitHub repository for reference. Exploring Google Maps API and Geo-Pandas.
+		\item Created UI for home page, login portal, search component. 
+
+	\end{itemize}
+	
+	\subsection*{Other works}
+	\begin{itemize}
+		\item Created GitHub organization at \url{https://github.com/Project-Dragon-Fly}. Various data, slides, notebooks etc are saved at Google drive \url{https://drive.google.com/drive/folders/1GbQ1L1mfY97nh3NXE4Iyz\_e2gIwvmH0V?usp=sharing}
+		\item Defining of data format between different module/services. \\
+		Developed intermediate data representation format for the data that are fetched from the user (camera config details) and the output of AI model (various vehicle descriptions: color, make etc.) Changes saved at \url{https://github.com/Project-Dragon-Fly/mock-servers}
+		
+		\item Boilerplate code for different module/services are being developed. Completed initial schema design of Database and query for frame set retrieval based on given features. Changes saved at \url{https://github.com/Project-Dragon-Fly/backend-server}
+		
+		\item Registered and acquired dataset from NVIDIA AI city challenge. However, failed to meet their deadlines. Few more dataset are found at Kaggle.
+		
+		\item Tested live camera infrastructure and obtained access to camera and NVR infrastructure. 
+
+	\end{itemize}
+	
+	\newpage
+	
+	\section*{Works planned}
+	\subsection*{AI model}
+	\begin{itemize}
+		\item Resolving the failure of custom 9 class Indian vehicle detection
+		\item Labeling of more data. Need to extract more video streams from camera network infrastructure.
+		\item Detection of major classes are given first priority. Upon achieving adequate accuracy, detection are to be made for sub-classes 
+	\end{itemize}
+	
+	\subsection*{UI/UX interface}
+	\begin{itemize}
+		\item Database relationship between various camera configuration needs to be properly defined.
+		\item Completion of user interfaces for displaying results, homepage, route map.
+		\item Algorithms for computing routes need to be explored
+	\end{itemize}
+	
+\end{document}
