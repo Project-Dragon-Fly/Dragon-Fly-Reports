@@ -1,13 +1,13 @@
-# DragonFly- Reports
+# DragonFly-Reports
 
 
 This repository houses the latex report template for presenting the works done in the project in a report format.
 
-The 2-week **evaluation sheet** _(aka: **project diary**)_ for the supervisor can be found at directory `evaluation-sheet/`. The recent supervisor evaluation sheet is saved at [evaluation-sheet.pdf](https://drive.google.com/file/d/1sipyniSvpllijGygLhRiPDuqRFlqRQco/view).
+The 2-week **evaluation sheet** _(aka: **project diary**)_ for the supervisor can be found at directory `evaluation-sheet/`. The recent supervisor evaluation sheet is saved at [evaluation-sheet.pdf](https://drive.google.com/file/d/1sipyniSvpllijGygLhRiPDuqRFlqRQco/view?usp=sharing).
 
 
 
-The review is a brief works done during a course of a month, detailing of every steps done - an elaborate form of **project diary** _(aka: **evaluation-sheet**)_. The document is saved under the directory `review-reports`. The recent compiled version is saved at [review-report.pdf](https://drive.google.com/file/d/1rtAHmQO8sBy8ahexA9IbREbi8JrnJ1zO/view)
+The review is a brief works done during a course of a month, detailing of every steps done - an elaborate form of **project diary** _(aka: **evaluation-sheet**)_. The document is saved under the directory `review-reports`. The recent compiled version is saved at [review-report.pdf](https://drive.google.com/file/d/1CcunMIIRRKLQAtP_0-kOL9XGP3EE2EQa/view?usp=sharing)
 
 ### Compiling Latex document
 1. Move into the required directory using `cd` command
