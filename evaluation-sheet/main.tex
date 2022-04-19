@@ -10,19 +10,28 @@
 
 \begin{document}
 
-\begin{workDone}{15 March}{31 March 2022}
+\begin{workDone}{31 March}{18 April 2022}
 	\begin{itemize}
-		\item Completed initial schema design of Database and query for frame set retrieval based on given features
-		\item Worked on map API and research in the topic taking out GitHub repository for reference.
-		\item Started working on UI design
-		\item Registered for NVIDIA AI city challenge and acquired data set.
-		\item Watched YouTube tutorial on the evolution of AI practices. Got deeper understanding of classical object detection approaches: HOG, SIFT,... to ai models: ALeXNet, CNN, R-CNN, YOLO, mobile-SSD.
-		\item Deeper search on the different architecture of object detection model conducted. Found comparison chart of various models. Found comparable models - CentralNet, YOLO, RetinaNet, EfficientDet
-		\item Found various version of YOLO: YOLOv3, YOLOv4, YOLOv5, PP-YOLO etc
-		\item Working on YOLOv4 with deepsorting - Cloned the repo "theAIGuysCode/YOLOv4-deepsort"
-		\item Generated tracking video using the yolov4-deepsort. used pretrained weight download from darkNet.
+		\item Downloaded Kaggle dataset on Indian vehicles
+		\item Labeled kaggle dataset using \textbf{labelImg} - 9 classes in 733 images
+		\item Trained yolov4 using \textbf{darknet} at google colab
+		\begin{itemize}
+			\item Completed 4800 iterations
+			\item Achieved mAP of 96.7\%
+		\end{itemize}
+		\item Labeled retrieved video frames using labelImg
+		\begin{itemize}
+			\item Labeled 826 images
+			\item Low variety of vehicles
+		\end{itemize}
+		\item Constructed base for UI - home page and login page
+		\item Update on \textbf{Routing methods}
+		\begin{itemize}
+			\item Created DB model, routing schemas
+			\item Accounting for business logic
+		\end{itemize}		
+		\item Presented First implementation review
 	\end{itemize}
-
 \end{workDone}
 
 \end{document}
