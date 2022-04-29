@@ -10,27 +10,40 @@
 
 \begin{document}
 
-\begin{workDone}{31 March}{18 April 2022}
+\begin{workDone}{18 April}{29 April 2022}
+	\setstretch{0.9}
 	\begin{itemize}
-		\item Downloaded Kaggle dataset on Indian vehicles
-		\item Labeled kaggle dataset using \textbf{labelImg} - 9 classes in 733 images
-		\item Trained yolov4 using \textbf{darknet} at google colab
+		\item Developed scripted to download live video frames into workstation
+		\item Building of container for the current AI detection model
 		\begin{itemize}
-			\item Completed 4800 iterations
-			\item Achieved mAP of 96.7\%
+			\item Converted Darknet to output yolov4 detection box
+			\item Developed python wrapper to execute in shell
+			\item Found conversion code for .weights into TensorFlow models.
 		\end{itemize}
-		\item Labeled retrieved video frames using labelImg
+		\item Dateset manipulation - Modifying labelImg for faster labeling
 		\begin{itemize}
-			\item Labeled 826 images
-			\item Low variety of vehicles
+			\item Integration of Darknet into labelImg
+			\item Developed \textbf{Image-Dictionary} for aiding in manual labeling
+			\item Developed code for obtaining stats and conversion of labeled data
 		\end{itemize}
-		\item Constructed base for UI - home page and login page
-		\item Update on \textbf{Routing methods}
+	
+		\item Setting up Workstation
 		\begin{itemize}
-			\item Created DB model, routing schemas
-			\item Developed business logic
-		\end{itemize}		
-		\item Presented First implementation review
+			\item Obtained workstation
+			\begin{itemize}
+				\item Intel(R) Xeon(R) W-2255 CPU @ 3.70GHz
+				\item 20 Cores CPU with 62GB Ram
+				\item NVIDIA Quadro P2200 with 5GB VRAM
+			\end{itemize}
+			
+			\item Installed NVIDIA, CUDA, cuDNN, opencv, tensorflow.
+			\item Setting up Jupyter-Hub, SSH, VPN services.
+		\end{itemize}
+		\item AI model status
+		\begin{itemize}
+			\item Completed 7300 iterations
+			\item Achieved mAP of 97.7\%
+		\end{itemize}
 	\end{itemize}
 \end{workDone}
 
