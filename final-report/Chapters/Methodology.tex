@@ -1,0 +1,22 @@
+\chapter{Methodology}
+\lipsum[1-2]
+
+
+\section{Training}
+\lipsum[1]
+
+\subsection{Method Overview}
+\lipsum[1-2]
+
+The $P$ is defined as the following:
+\begin{equation}
+	P(\tau | \tau_{ref},C) = \frac{1}{Z} exp(-c(\tau, \tau_{ref},C)) \\
+\end{equation}
+Where $	Z = \int_{\tau} P(\tau | \tau_{ref},C)$ is the normalization factor and $c(\tau, \tau_{ref},C) \in \R_+$ is a cost function indication proximity to the reference and distance from obstacles. The trajectory cost function is defined as 
+\begin{equation}
+	c(\tau, \tau_{ref},C) = \int_0^1 \lambda_c C_{collision}(\tau(t)) + \int_0^1 [\tau(t)-\tau_{ref}(t)]^T Q[\tau(t)-\tau_{ref}(t)]{dt}
+	\label{eqn:collision}
+\end{equation}
+where $\lambda_c = 1000$, $Q$ is a positive semi-definite state cost matrix and $C_{collision}$ is a measure of the distance of the quadrotor to the points in $C$ 
+
+\lipsum[1-2]

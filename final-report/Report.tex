@@ -1,0 +1,82 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Environments and Shorthands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper, oneside, 12pt]{report}
+\usepackage{lipsum}
+\input{reportformat.tex}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Meta Data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\projectName{Project title}
+\guideName{Guide Name}
+
+\addGrpMember{unv id}{Name}
+\addGrpMember{unv id}{Name}
+\addGrpMember{unv id}{Name}
+\addGrpMember{unv id}{Name}
+\def\myDate{\today}
+%\addbibresource{reference.bib}
+\graphicspath{{./Images/}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title, dedication and certificate pages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagenumbering{gobble}
+\input{SupportMatter/frontmatter.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Acknowledgements, abstract and publications
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagenumbering{roman}
+\pagestyle{plain}
+
+\clearpage
+\addcontentsline{toc}{chapter}{Acknowledgments}
+\input{SupportMatter/Acknowledgments.tex}
+
+\clearpage
+\addcontentsline{toc}{chapter}{Abstract}
+\input{SupportMatter/Abstract.tex}
+
+\tableofcontents
+
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Main Content
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\pagenumbering{arabic}
+
+\input{Chapters/Introduction.tex}
+\input{Chapters/LiteratureReview.tex}
+\input{Chapters/Methodology.tex}
+\input{Chapters/Result.tex}
+\input{Chapters/Conclusion.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Bibliography 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,reference.bib}
+%\printbibliography
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
