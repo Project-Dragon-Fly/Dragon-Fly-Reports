@@ -14,5 +14,6 @@
 *.fls
 *.toc
 *.fdb_latexmk
-main.pdf
-report.pdf
+*/main.pdf
+*/report.pdf
+*/Report.pdf
