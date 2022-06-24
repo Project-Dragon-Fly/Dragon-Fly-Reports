@@ -1,65 +1,147 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Environments and Shorthands
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[a4paper, oneside, 12pt]{report}
+\documentclass[12pt,a4paper]{report}
+\usepackage[left=3.5cm,top=1.5cm,right=3cm,bottom=4cm]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{cite}
+\usepackage{framed}
+\usepackage{a4wide}
+\usepackage{float}
+\usepackage{epsfig}
+\usepackage{longtable}
+\usepackage{enumerate}
+\usepackage{afterpage}
+\usepackage{multirow}
+\usepackage{ragged2e}
+\usepackage{gensymb}
+\usepackage{amsfonts} 
+\usepackage{setspace}           
+\usepackage{float}
+\usepackage{txfonts}
 \usepackage{lipsum}
-\input{reportformat.tex}
+\usepackage{blindtext}
+\usepackage{xpatch}
+\usepackage{url}
+\usepackage{leqno}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{lscape}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{array} % Required for boldface (\bf and \bfseries) tabular columns
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
 
+\newcommand{\Usefont}[1]{\fontfamily{#1}\selectfont}
+\usepackage{lscape} % for landscape tables
 
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=false,
+	linkcolor=red,
+	citecolor=red,
+	pdfborder={0 0 0},
+}
+\usepackage{url}
+
+\renewcommand{\baselinestretch}{1.7} 
+\linespread{1.5}
+
+\usepackage[intoc, english]{nomencl}
+\hyphenpenalty=5000
+\tolerance=1000
+
+\usepackage[nottoc]{tocbibind}
+\bibliographystyle{IEEEtran}
+\renewcommand{\bibname}{References}
+
+\graphicspath{{./Images/}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Meta Data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\projectName{Dragon-Fly: Vehicle Survlience system}
-\guideName{Dr. Rafeeque P.C}
+\def \title{Dragon-Fly: Vehicle Surveillance System} % Project title
 
-\addGrpMember{KNR18CS005}{Abhinand C}
-\addGrpMember{KNR18CS027}{Edwin Jose George}
-\addGrpMember{KNR18CS032}{Lavanya E.V}
-\addGrpMember{KNR18CS050}{Shilpa Suresh}
-\def\myDate{\today}
-%\addbibresource{reference.bib}
-\graphicspath{{./Images/}}
+\def \dept{Computer Science and Engineering} %Department
+\def \Degree{Bachelor of Technology} %degree
+\def \branch{Computer Science and Engineering} %branch
+\def \college{Government College of Engineering Kannur} % Name of the College
+\def \collegeplace{Kannur} % Location of the College
 
+\def \hod{Dr. Rafeeque P.C} %Head of Department
+\def \hoddes{Professor and Head} %HOD designation
+
+\def \acadyear{2021 - 22} % Academic year
+\def \month{June 2022} %Month of Report submission
+\def \date{01-07-2022} %Date of signing the declaration
+
+
+\def \studentA{Abhinand C} %Project batch member 1
+\def \studentAroll{KNR18CS005} % Project batch member 1 ktu id
+
+\def \studentB{Edwin Jose George} %Project batch member 2
+\def \studentBroll{KNR18CS027} % Project batch member 2 ktu id
+
+\def \studentC{Lavanya E.V} %Project batch member 3
+\def \studentCroll{KNR18CS032} % Project batch member 3 ktu id
+
+\def \studentD{Shilpa Suresh} %Project batch member 4
+\def \studentDroll{KNR18CS050} % Project batch member 4 ktu id
+
+\def \guide{Dr. Rafeeque P.C} %Project guide
+\def \guidedes{Professor}%project guide designation
+
+\def \guideco{Prof. Bincy Antony M} %Project coguide
+\def \guidecodes{Assistant Professor}%project coguide designation
+
+\def \guideext{Prof. Project ext guide} %Project external organisation guide
+\def \guideextdes{Engineer/Scientist}%project external guide designation
+\def \guideextorg{External guide organization} % Project external guide organization
+
+\def \projcordinatorA{Prof. Bincy Antony M}% Project coordinator 1 
+\def \projcordinatorAdes{Assistant Professor}% Project coordinator 1 designation
+
+\def \projcordinatorB{Prof. Bincy Antony M} % Project coordinator 2 
+\def \projcordinatorBdes{Assistant Professor}% Seminar coordinator 2 designation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \begin{document}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Title, dedication and certificate pages
+%% FrontMatter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagenumbering{gobble}
-\input{SupportMatter/frontmatter.tex}
+\include{SupportMatter/coverpage}
 
+% To print name of only the project coordinator 1 in the certificate page
+\include{SupportMatter/certificate} 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Acknowledgements, abstract and publications
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagenumbering{roman}
-\pagestyle{plain}
+% To print names of both the project coordinators in the certificate page
+%\include{SupportMatter/certificate2}
 
-\clearpage
-\addcontentsline{toc}{chapter}{Acknowledgments}
-\input{SupportMatter/Acknowledgments.tex}
+\include{SupportMatter/declaration}
 
-\clearpage
-\addcontentsline{toc}{chapter}{Abstract}
-\input{SupportMatter/Abstract.tex}
+\pagenumbering{roman} 
 
+\include{SupportMatter/Abstract}
+\include{SupportMatter/Acknowledgments} 
+
+\thispagestyle{empty}
+\newpage
+
+%%**********************Table of Contents***********************
 \tableofcontents
-
-\addcontentsline{toc}{chapter}{\listfigurename}
 \listoffigures
-
-\addcontentsline{toc}{chapter}{\listtablename}
 \listoftables
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Main Content
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\clearpage
+\cleardoublepage
+\setcounter{page}{1}
 \pagenumbering{arabic}
 
 \input{Chapters/Introduction.tex}
@@ -73,7 +155,7 @@
 %% Bibliography 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
-\addcontentsline{toc}{chapter}{Bibliography}
+%\addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,reference.bib}
 %\printbibliography

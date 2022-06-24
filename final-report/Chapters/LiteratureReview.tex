@@ -132,6 +132,7 @@ Owing to the success of AlexNet and VGG model, various study and research are co
 	\centering
 	\includegraphics[width=0.9\linewidth]{Images/overfeat}
 	\caption{Overfeat Architecture}
+	%SRC: https://cogneethi.com/assets/images/evodn/detection_overfeata_detect.jpg
 \end{figure}
 
 \subsubsection{R-CNN: Regions with Convolutional Neural Networks}
@@ -169,7 +170,7 @@ YOLO \cite{yolo_core_paper} is a clever CNN for doing object detection in real-t
 	
 	\item Each prediction from a grid cell will be of shape $C + B * 5$. Because there are $S*S$ grid cells in each image, the overall prediction of the model is a tensor of shape $S*S*(C+B*5)$.
 \end{enumerate}
-\begin{figure}[h!]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Images/yolo_steps}
 	\caption{YOLO detection steps}
@@ -201,6 +202,7 @@ These three portions of the model work together to first extract key visual feat
 
 \subsubsection{YOLO variants}
 \begin{table}[H]
+	\centering
 	\begin{tabular}{|c|c|c|c|c|}
 		\hline
 		\textbf{Varient} & \textbf{Release} & \textbf{FPS} & \textbf{mAP} & \textbf{Feature Extractor} \\ \hline
