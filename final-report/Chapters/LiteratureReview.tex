@@ -3,6 +3,52 @@ Artificial Intelligence (AI) is one of the most researched topic in the domain o
 
 Image processing is an interesting field of study that involves image classification, object detection, instance segmentation, object tracking etc. There have been various research and study to overcome the traditional image processing that employ various algorithm using opencv. Various level of optimization was performed to build deep neural networks that can effectively extract relevant features to identify the object.
 
+\section{Vehicle Identification Systems}
+AI have always found it way in developing intelligent system in automobile industry. They are used for smarter manufacturing process, leading to design of efficient systems. They have also helped in business by recommending most efficient path in road network. They are also utilized to build intelligent autonomous vehicles that can react to changes in real-time environment and make way to its destination safely. AI is also used for monitoring purposes for enhancing security. Several parallel papers and researches are build developing such monitoring system using camera network. Below presented are few of such system that are deployed in selected area.
+
+\subsection{CityFlow}
+Urban traffic optimization using traffic cameras as sensors is driving the need to advance state-of-the-art multitarget multi-camera (MTMC) tracking. This work  introduces CityFlow \cite{Tang_2019_CVPR}, a city-scale traffic camera dataset having the largest-scale dataset in terms of spatial coverage and the number of cameras/videos in an urban environment. The dataset contains a wide range of scenes, viewing angles, vehicle models, and urban traffic flow conditions. Camera geometry and calibration information are provided to aid spatio-temporal analysis. In addition, a subset of the benchmark is made available for the task of image-based vehicle re-identification (ReID). It also opens a way for new research problems such as vehicle pose estimation, viewpoint generation, etc.
+
+It have compared and bench-marked several state-of-the-art models using Muiti-Target-Single-Camera and Multi-Target-Multi-Camera tracking. They have given emphasis on the visual-spacio-temporal reasoning to re-identification. This approach was able to product better and faster results, handle large scale recognition and is successful in conducting small predictions. However, they require multiple camera scanning same object at multi viewpoint at the same time. It also demanded high quality videos and was also set-up at junction points.
+
+\subsection{Vehicle Make and Model Recognition system}
+A Vehicle Make and Model Recognition (VMMR) system \cite{manzoor2019real} can provide great value in terms of
+vehicle monitoring and identification based on vehicle appearance in addition to the vehicles attached license plate typical recognition. A VMMR system has a unique set of challenges and issues. Few of the challenges are image acquisition, variations in illuminations and weather, occlusions, shadows, reflections, large variety of vehicles, inter-class and intra-class similarities, addition/deletion of vehicles models over time, etc. The system extract image features from vehicle images and create feature vectors to represent the dataset. Then, two classification algorithms, Random Forest (RF) and Support Vector Machine (SVM) are used for classification. The proposed VMMR system recognizes vehicles on the basis of make, model, and generation (manufacturing years).
+
+For feature extraction, HOG and GIST algorithm are utilized. These vectors are saved in database supporting faster processing speed and improved recognition accuracy, accounting for partial viewpoints. However they have limited region interest with high computation time with increase in block of HOG. The system only addresses local high dimensional features, and have no global representation.
+
+\subsection{Multi-level Feature extraction}
+The intelligent transportation system is currently an active research area, and vehicle
+re-identification (Re-Id) is a fundamental task to implement it. It determines whether the given vehicle image obtained from one camera has already appeared over a camera network or not. This task becomes more challenging because of intra-class similarity,
+viewpoint changes, and inconsistent environmental conditions. A system \cite{cai2019efficient} is proposed which re-identifies a vehicle in two steps: first, shortlist the vehicle from a gallery set on the basis of appearance, and then in the second step, verify the shortlisted vehicle’s license plates with a query image to identify the targeted vehicle. 
+
+The global channel extracts the feature vector from the whole vehicle image, and the local region channel extracts more discriminative and salient features from different regions. A Siamese neural network is used to verify license plates to reach the
+exact vehicle. The system also account for color, model, and type as parameters of feature vectors. However, a significant impact of illumination can be found, which is worsen by background clutter. It also do not account for cross camera vehicle tracking.
+
+\subsection{Trends in Vehicle Re-Identification}
+Vehicle Re-identification (re-id) over surveillance camera network with non-overlapping
+field of view is an exciting and challenging task in intelligent transportation systems (ITS). Vehicle re-id matches targeted vehicle over non-overlapping views in multiple camera network. However, it becomes more difficult due to inter-class similarity, intra-class variability, viewpoint changes, and spatio-temporal uncertainty. In order to draw a detailed picture of vehicle re-id research, this research \cite{deng2021trends} provides a comprehensive description of the various vehicle re-id technologies, applicability, datasets, and a brief comparison of different methodologies. 
+This research specifically focuses on vision-based vehicle re-id approaches, including vehicle appearance, license plate, and spatio-temporal characteristics. Some of the main technology taken under consideration are:
+\begin{enumerate}
+	\item Magnetic Sensor-Based Vehicle Re-Identification
+	\item Inductive Loop-Based Vehicle Re-Identification
+	\item Global Positioning Systems-Based Vehicle Re-Identification
+	\item Vision-Based Vehicle Re-Identification
+	\begin{enumerate}
+		\item Feature Representation for Vehicle Re-Identification
+		\item Traditional Machine Learning-Based Vehicle Re-Identification
+		\item Similarity Metric for Vehicle Re-Identification
+		\item Fine-Grained Visual Recognition-Based Vehicle Re-Identification
+		\item View-Aware-Based Vehicle Re-Identification
+		\item Generative Adversarial Network-Based Vehicle Re-Identification
+		\item Attention Mechanism
+		\item License Plate-Based Vehicle Re-Identification
+	\end{enumerate}
+	\item Spatio-Temporal Cues-Based Vehicle Re-Identification Approaches
+	\item Hybrid Methods-Based Vehicle Re-Identification
+\end{enumerate}
+
+
 \section{Traditional Methods of Image processing}
 Traditional methods are computation intensive and hence slow. However, they have higher accuracy, but prone to noise. Some of the methods are:
 \begin{enumerate}
@@ -109,7 +155,7 @@ The same author of the previous paper(R-CNN) solved some of the drawbacks of R-C
 Both of the above algorithms(R-CNN \& Fast R-CNN) uses selective search to find out the region proposals. Selective search is a slow and time-consuming process affecting the performance of the network. Therefore an object detection algorithm was proposed in \textbf{Faster-RCNN} that eliminates the selective search algorithm and lets the network learn the region proposals. Similar to Fast R-CNN, the image is provided as an input to a convolutional network which provides a convolutional feature map. Instead of using selective search algorithm on the feature map to identify the region proposals, a separate network is used to predict the region proposals. The predicted region proposals are then reshaped using a RoI pooling layer which is then used to classify the image within the proposed region and predict the offset values for the bounding boxes.
 
 \subsection{YOLO: You Only Look Once}
-YOLO is a clever CNN for doing object detection in real-time. The algorithm applies a single neural network to the full image, and then divides the image into regions and predicts bounding boxes and probabilities for each region. These bounding boxes are weighted by the predicted probabilities. The algorithm “only looks once” at the image in the sense that it requires only one forward propagation pass through the neural network to make predictions. After non-max suppression it then outputs recognized objects together with the bounding boxes. With YOLO, a single CNN simultaneously predicts multiple bounding boxes and class probabilities for those boxes. YOLO trains on full images and directly optimizes detection performance. 
+YOLO \cite{yolo_core_paper} is a clever CNN for doing object detection in real-time. The algorithm applies a single neural network to the full image, and then divides the image into regions and predicts bounding boxes and probabilities for each region. These bounding boxes are weighted by the predicted probabilities. The algorithm “only looks once” at the image in the sense that it requires only one forward propagation pass through the neural network to make predictions. After non-max suppression it then outputs recognized objects together with the bounding boxes. With YOLO, a single CNN simultaneously predicts multiple bounding boxes and class probabilities for those boxes. YOLO trains on full images and directly optimizes detection performance. 
 
 \subsubsection{Steps}
 \begin{enumerate}
@@ -134,7 +180,7 @@ YOLO is a clever CNN for doing object detection in real-time. The algorithm appl
 The YOLO model is made up of three key components:
 \begin{enumerate}
 	\item The Backbone \\
-	It is the part of the network made up of convolutional layers to detect key features of an image and process them. The backbone is first trained on a classification dataset and typically trained at a lower resolution than the final detection model, as detection requires finer details than classification.
+	It is the part of the network made up of convolutional layers to detect key features of an image and process them. The backbone is first trained on a classification dataset and typically trained at a lower resolution than the final detection model, as detection requires finer details than classification. YOLOv4 have CSP-Darknet-53 as the backbone of the network 
 
 	\item The Neck \\
 	It uses the features from the convolution layers in the backbone with fully connected layers to make predictions on probabilities and bounding box coordinates. 
@@ -142,18 +188,19 @@ The YOLO model is made up of three key components:
 	\item The Head \\
 	It is the final output layer of the network which can be interchanged with other layers with the same input shape for transfer learning. 	
 \end{enumerate} 
-These three portions of the model work together to first extract key visual features from the image then classify and bound them. Figure \ref{fig:yolov4-architecture} shows the architecture of YOLOv4 model.
+These three portions of the model work together to first extract key visual features from the image then classify and bound them. This happens for multiple scales. Each YOLO head corresponds to particular scale of detection. They are the combined on score values to produce final detection. Figure \ref{fig:yolov4-architecture} shows the architecture of YOLOv4 model.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.85\linewidth]{Images/YOLOV4-research-gate}
 	\caption{YOLOv4 architecture}
 	\label{fig:yolov4-architecture}
+	%SRC: https://www.researchgate.net/figure/Overall-structure-of-YOLOv4-including-CSPDarknet-backbone-SPPnet-PANet-and-3-YOLO_fig2_344919620
 \end{figure}
 
 
 \subsubsection{YOLO variants}
-\begin{table}[h!]
+\begin{table}[H]
 	\begin{tabular}{|c|c|c|c|c|}
 		\hline
 		\textbf{Varient} & \textbf{Release} & \textbf{FPS} & \textbf{mAP} & \textbf{Feature Extractor} \\ \hline
