@@ -243,6 +243,6 @@ A Siamese neural network (also called a twin neural network) is an artificial ne
 	%SRC: https://miro.medium.com/max/1400/1*jQcJ7ik58aeTV0As2d9Jcw.png
 \end{figure}
  
-The network consists of two identical CNN models for feature extraction. The CNN model is trained separately to identify the images. The last classification of the separately trained CNN model is remove so that the feature vector is extracted. The feature vector from the two identical CNN model is passed into DNN layer os Siamese network that outputs if the images are similar or not. One of the image is called the anchor image and the other is the test images. If the test image is similar to anchor image, the final output product '1'. Keras article \cite{siamese_keras} and GitHub repository \cite{siamese_git} provides excellent reference materials.
+The network consists of two identical CNN models for feature extraction. The CNN model is trained separately to identify the images. The last classification layer of the separately trained CNN model is remove so that the feature vector is extracted. The feature vector from the two identical CNN model is passed into DNN layer of Siamese network that outputs if the images are similar or not. One of the image is called the anchor image and the other is the test images. Keras article \cite{siamese_keras} and GitHub repository \cite{siamese_git} provides excellent reference materials.
 
 
