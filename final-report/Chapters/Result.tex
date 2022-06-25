@@ -57,12 +57,19 @@ YOLOv4 model is trained with 1559 images for 9 classes as illustrated in table \
 	\label{tag:yolo_score}
 \end{table}
 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Images/predictions}
+	\caption{YOLOv4 vehicle predictions}
+\end{figure}
+
+
 
 \section{DeepSORT}
 Ground Truth dataset was not available to quantize the result. However, via visual inception, it was found that the model was able to assign correct ID number to most of the vehicles. I was observed that such an increase in accuracy was observed due to the presence of Kalman filtering algorithm. The deep matrix association for humans was trigger only at the presence of humans. It lead to a mismatch where traditional Kalman filter tries to re-Id the bounding boxes, where as deepSORT tries to match human description leading to wrong answer. The anomaly can be strongly seen in public transport bus. Building of deep matrix for vehicle can improve the system.
 
 \subsection{Siamese Network}
-Proper Siamese Network was unable to construct, as the layers of yolov4 models was not able to selectively extract. The YOLOV4 model have tight coupling between layers, with multiple output and input vectors. The model is originally implement in Darknet.  This provided hindrance during the extraction of layers. Ground Truth dataset is not able to quantize its accuracy
+Proper Siamese Network was unable to construct, as the layers of yolov4 models was not able to selectively extract. The YOLOV4 model have tight coupling between layers, with multiple output and input vectors. The model is originally implement in Darknet.  This provided hindrance during the extraction of layers using keras and python. Ground Truth dataset is not able to quantize its accuracy
 
 
 
