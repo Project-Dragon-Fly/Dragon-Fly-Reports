@@ -95,9 +95,72 @@ The camera feed is obtained from a project deployed by Center for Information, C
 \lipsum[1]
 
 \section{AI Model}
-\lipsum[1-3]
+\subsection*{YOLOv4}
+YOLOv4 model is used for the detection of vehicles. Transfer learning was conducted on the AI model that significantly reduced the training time required. Transfer learning is the process of using a pre-trained model and changing its parameter to learn new/fine tuned concept. Pre-trained weight was extracted from the official YOLOv4 repository \cite{darknet} that used MS COCO dataset to train 80 classes. Parameter tuning is performed which are detailed in table \ref{tab:yolo_parameter}.
+
+\begin{table}[!ht]
+	\centering
+	\begin{tabular}{|l|l|}
+		\hline
+		Input size            & $416 * 416$  \\ \hline
+		Input Channels        & 3            \\ \hline
+		Batch size            & 32           \\ \hline
+		learning rate         & 0.0013       \\ \hline
+		Yolo layer            & $[256*256],[512*512],[1024*1024]$ \\ \hline
+		Total Layers          & 162          \\ \hline
+		Target Classes (9)    & \begin{tabular}[c]{@{}l@{}}
+			auto, bus, tempo traveler, tractor, \\
+			truck, van, two wheeler, car, jcb\end{tabular} \\ \hline
+	\end{tabular}%
+	\caption{YOLOv4 Parameter}
+	\label{tab:yolo_parameter}
+\end{table}
+
+The model was trained using Darknet at Google Colab. Later the environment was changed to the Workstation provided by the Dept. of Computer Science and Engineering, Govt. College of Engineering Kannur. A total of approx. 48 hours are spend in training, reaching 97.7\% mean Average Precision (mAP) at 7300 iterations. Figure \ref{fig:darknettrainingchart} summarizes training.
+
+The dataset for training was collected at two different sources. Kaggle provided a wide variety of Indian Vehicle dataset that spanned across country. Footage from CICET camera network is also extracted. Each and every frame was labeled using LabelImg tool. Summary of the labeled dataset is depicted in the table \ref{tab:dataset_sum1}.
+
+\begin{table}[!ht]
+	\begin{tabular}{m{0.45\linewidth} m{0.45\linewidth}}
+%		\begin{figure}
+			\centering
+			\includegraphics[width=\linewidth]{Images/darknet_training_chart}
+			\captionof{figure}{YOLOv4 training chart}
+			\label{fig:darknettrainingchart}			
+%		\end{figure}
+
+		 & 
+		 
+		 \begin{tabular}{|l|c|c||c|}
+		 	\hline
+		 	\textbf{Class}        & \textbf{Kaggle} & \textbf{CICET} & \textbf{Total} \\ \hline
+		 	Two wheeler           & 557             & 291            & \textbf{848}   \\ \hline
+		 	Truck                 & 354             & 170            & \textbf{424}   \\ \hline
+		 	Auto                  & 297             & 146            & \textbf{443}   \\ \hline
+		 	car                   & 233             & 432            & \textbf{665}   \\ \hline
+		 	bus                   & 220             & 112            & \textbf{332}   \\ \hline
+		 	tractor               & 133             & 0              & \textbf{113}   \\ \hline
+		 	van                   & 101             & 131            & \textbf{232}   \\ \hline
+		 	JCB                   & 1               & 0              & \textbf{1}     \\ \hline \hline
+		 	\textbf{Total Boxes}  & \textbf{1956}   & \textbf{1282}  & \textbf{3238}  \\ \hline
+		 	\textbf{Total Images} & \textbf{733}    & \textbf{826}   & \textbf{1559}  \\ \hline
+		 \end{tabular}
+		 \captionof{table}{Dataset summary}
+		 \label{tab:dataset_sum1}
+	\end{tabular}
+\end{table}
+
+\subsection*{DeepSORT}
+DeepSORT is utilized to assign unique id to each object in an continuous frame. The implementation is directly extracted from the article of AIGuysCode \cite{theaiguyscode_deepsort}. The given model tries to extract human features as the deep matrix. No modification are made as Kalman filter provides greater accuracy. However, learning the deep matrix of vehicles can further increase accuracy and aid in siamese network.
+
 \subsection{Image Dictionary}
-\lipsum[1-2]
+In-order to facilitate correct labeling of images, a concept called Image Dictionary is introduced. Image Dictionary is a hierarchical classification of images. Each type can have its sub-type. A visual representation is also provided for each type. It is build using D3 JS.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\linewidth]{Images/image_dictionary}
+	\caption{Image Dictionary}
+\end{figure}
+
 
 \section{Algorithm}
 \lipsum[1-3]
