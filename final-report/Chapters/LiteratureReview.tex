@@ -1,7 +1,7 @@
 \chapter{Literature Review} 
 Artificial Intelligence (AI) is one of the most researched topic in the domain of Computer Science. It is the artificial creation of human-like intelligence that can learn, perceive and process information. AI provides a powerful tool for solving image recognition, document classification as well as for the advancement of interdisciplinary problems. AI is an interdisciplinary domain that make use of various mathematical models, statistical models, neural networks etc to learn pattern and predict unseen data with comparable accuracy. Unlike traditional model, they learn the concepts and rules by learning from examples. Traditional model requires rules to be specified, that results in higher computation but higher accuracy. The ability of AI to generalize even accounting for noise with higher speed promoted various levels of growth, especially in the field of image processing.
 
-Image processing is an interesting field of study that involves image classification, object detection, instance segmentation, object tracking etc. There have been various research and study to overcome the traditional image processing that employ various algorithm using opencv. Various level of optimization was performed to build deep neural networks that can effectively extract relevant features to identify the object.
+Image processing is an interesting field of study that involves image classification, object detection, instance segmentation, object tracking etc. There have been various research and study \cite{diff_algo} to overcome the traditional image processing that employ various algorithm using opencv. Various level of optimization was performed to build deep neural networks that can effectively extract relevant features to identify the object.
 
 \section{Vehicle Identification Systems}
 AI have always found it way in developing intelligent system in automobile industry. They are used for smarter manufacturing process, leading to design of efficient systems. They have also helped in business by recommending most efficient path in road network. They are also utilized to build intelligent autonomous vehicles that can react to changes in real-time environment and make way to its destination safely. AI is also used for monitoring purposes for enhancing security. Several parallel papers and researches are build developing such monitoring system using camera network. Below presented are few of such system that are deployed in selected area.
@@ -69,9 +69,9 @@ Traditional methods are computation intensive and hence slow. However, they have
 \end{enumerate} 
 
 
-\begin{figure}[!ht]
+\begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\linewidth]{Images/DPM}
+	\includegraphics[height=0.5\textheight]{Images/DPM}
 	\caption{Deformable Parts Model for Human detection}
 	\label{fig:dpm}
 	%SRC: https://github.com/lilianweng/lilianweng.github.io/blob/master/posts/2017-12-15-object-recognition-part-2/DPM-matching.png
@@ -81,9 +81,9 @@ Traditional methods are computation intensive and hence slow. However, they have
 \section{Neural Network Models}
 Neural Network model consists of neurons firing signals to change the output. Each neuron have weights associated along with activation function. The learning happens through the change of each weights. They require higher training time, but produce output faster along with the ability to resist the effect of noise. They generalize well event to identify occluded objects from image. 
 
-The major jump from traditional method into network model was on to the introduction of AlexNet Model. AlexNet have 5 convolution layers that effectively scale and extract the features. They are then pooled at each layers. At the end, a dense neural network gets trained to predict values for the output neuron, which are softmax-ed to obtain particular class. Dense neural network mimics a classifier. They are used for image classification. To account for various dimension of image, a concept of image pyramid is used to process image at various levels. VGG is an extension of AlexNet. Figure \ref{fig:alexnet_vgg} shows the architecture of AlexNet and VGG model. Convolutional Neural Network (CNN) is a set of filters that extract a specific feature by applying some kernel.<
+The major jump from traditional method into network model was on to the introduction of AlexNet Model. AlexNet have 5 convolution layers that effectively scale and extract the features. They are then pooled at each layers. At the end, a dense neural network gets trained to predict values for the output neuron, which are softmax-ed to obtain particular class. Dense neural network mimics a classifier. They are used for image classification. To account for various dimension of image, a concept of image pyramid is used to process image at various levels. VGG is an extension of AlexNet. Figure \ref{fig:alexnet_vgg} shows the architecture of AlexNet and VGG model. Convolutional Neural Network (CNN) is a set of filters that extract a specific feature by applying some kernel.
 
-\begin{figure}[!ht]
+\begin{figure}[h!]
 	\centering
 	\begin{tabular}[!ht]{m{0.4\hsize}m{0.55\hsize}}
 		\begin{subfigure}[b]{\linewidth}
@@ -170,7 +170,7 @@ YOLO \cite{yolo_core_paper} is a clever CNN for doing object detection in real-t
 	
 	\item Each prediction from a grid cell will be of shape $C + B * 5$. Because there are $S*S$ grid cells in each image, the overall prediction of the model is a tensor of shape $S*S*(C+B*5)$.
 \end{enumerate}
-\begin{figure}[H]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Images/yolo_steps}
 	\caption{YOLO detection steps}
@@ -215,3 +215,34 @@ These three portions of the model work together to first extract key visual feat
 	\end{tabular}
 	\caption{YOLO variants comparison}
 \end{table}
+
+\subsection{DeepSORT: SORT with Deep Association}
+Simple Online and Realtime Tracking (SORT) \cite{sort} is a pragmatic approach to multiple object tracking with a focus on simple, effective algorithms. DeepSort \cite{deepsort} is an integration to improve the performance of SORT. Due to this extension, we are able to track objects through longer periods of occlusions, effectively reducing the number of identity switches. Much of the computational complexity is spend in learning a deep association metric. During online application, we establish measurement-to-track associations using nearest neighbor queries in visual appearance space. 
+
+Traditional SORT algorithm simply uses the Kalman filter along with Hungarian algorithm for the tracking components. It achieves a speed of 260Hz. Kalman filtering, also known as linear quadratic estimation (LQE), is an algorithm that uses a series of measurements observed over time and produces estimates of unknown variables that tend to be more accurate than those based on a single measurement alone, by estimating a joint probability distribution over the variables for each time frame. The Hungarian method is a combination optimization algorithm that solves the assignment problem in polynomial time and which anticipated later primal–dual methods. It gives a good tracking of object. But the id association fails where object osculation or sudden change in motion happens. It fails when the object is completely covered by another object. A deep association provides better re-identification even after skipping few frames. The feature vectors are matched using cosine distance similarity \cite{deep_cosine}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Images/deepsort}
+	\caption{DeepSORT architecture}
+	\label{fig:deepsort}
+	%SRC: https://www.researchgate.net/figure/Architecture-of-Deep-SORT-Simple-online-and-real-time-tracking-with-deep-association_fig2_353256407
+\end{figure}
+
+Figure \ref{fig:deepsort} depicts architecture of DeepSORT. Frames of a series of time-series are passed into image detection model (Here YOLOv4). The model computes the bounding box for each detection. They are passed into a Detection Module to extract the feature vector, also called as 'encoders'. They are passed into Kalman filter for prediction. Cosine similarity is used to associate ID. It is supported by Deep metric (Deep appearance Descriptor) and finally the next location is predicted in polynomial time using Hungarian Assignment technique. Several articles \cite{deepsort_web}  \cite{theaiguyscode_deepsort} and GitHub repository \cite{obj_track_deep_yolo} shows the implementation of Deepsort for Human re-identification.
+
+
+\subsection{Siamese Network}
+A Siamese neural network (also called a twin neural network) is an artificial neural network that uses the same weights while working on two different input vectors to compute comparable output vectors. The are often used for face matching, fingerprint matching, recognizing handwritten checks, and matching queries with indexed documents etc. It have a simple and unique architecture apart form other neural networks as shown in figure \ref{fig:siamese}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{Images/siamese}
+	\caption{Siamese Network architecture}
+	\label{fig:siamese}
+	%SRC: https://miro.medium.com/max/1400/1*jQcJ7ik58aeTV0As2d9Jcw.png
+\end{figure}
+ 
+The network consists of two identical CNN models for feature extraction. The CNN model is trained separately to identify the images. The last classification of the separately trained CNN model is remove so that the feature vector is extracted. The feature vector from the two identical CNN model is passed into DNN layer os Siamese network that outputs if the images are similar or not. One of the image is called the anchor image and the other is the test images. If the test image is similar to anchor image, the final output product '1'. Keras article \cite{siamese_keras} and GitHub repository \cite{siamese_git} provides excellent reference materials.
+
+
