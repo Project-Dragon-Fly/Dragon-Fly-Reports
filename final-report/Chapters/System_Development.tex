@@ -23,7 +23,7 @@ CCTV Video surveillance systems utilize restricted closed network isolated from 
 Constructing a VPN (Virtual Private Network) split tunnel can enable secure communication interface to the network over unsecured channels. Wireguard, distributed in Linux Kernel, is utilized in our design to create VPN interface with very less overhead and very high performance.
 
 \subsection{Video Stream Ingestion}
-Video stream from NVR and IP camera are ingested to our system by Stream Handler and FrameGen module for processing using OpenCV. FrameGen module reads the live stream of cameras specified and save frames to storage backend with timestamp and signature as metadata. It ignores dead frames, blacklisted and idle frames and saves only required frames thereby reducing storage requirement.
+Video stream from NVR and IP camera are ingested to our system by Stream Handler and FrameGen module for processing using OpenCV. FrameGen module reads the live stream of camera and save frames to storage backend with timestamp and signature as metadata. It ignores dead frames, blacklisted and idle frames and saves only required frames thereby reducing storage requirement. FrameGen Module is launched as a cron job using scheduled Celery Beat task, configured to proccess specified list of camera for specified duration regularly. 
 
 Additionally, FFmpeg is used for on-the-fly transcoding (transcoding while streaming) of live RSTP stream (which is a pull stream) from IP camera and NVR, to RTMP stream (which is a push stream) to NGINX Media Server. A stream key is attached to each stream which NGINX relays as HLS (HTTP Live Streaming) securely over SSL (Secure Socket Layer) to client browser of the authenticated user containing stream key.   
 
