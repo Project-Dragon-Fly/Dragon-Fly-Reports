@@ -30,6 +30,8 @@ Additionaly, FFmpeg is used for on-the-fly transcoding (transcoding while stream
 \subsection{Storage Backend}
 For local development setup, Linux File system is used as storage backend. For production grade setup MinIO Server is used as the storage backend to provide secure redundancy, segregated access, and hybrid multi-tenant enterprise grade system. Each file is identified by the path and object id and can be retrieved by authorized users. 
 
+Video Files, Frames, Snapshots, thumbnails and other static files are organised and storage in persistant storage backend. Public static files are served directly through NGINX.
+
 
 \begin{figure}
 	\centering
