@@ -46,10 +46,15 @@ When a user launches the app, the request is proccessed by middlewares in django
 
 
 \subsection{Load Balancer \& Reverse Proxy}
+NGINX is used as a load balancer, gateway and Reverse proxy. It handles request from client, preferably encrypted over SSL, proxies to corresponding upstream server or application server. It directly serves static files.
 
 \subsection{Media Streaming Server}
+Media Streaming Server is used to provide secure live stream camera footage access to the user using HLS (HTTP Live Streaming) over SSL. It relays the stream recieved to the client. Nginx with RTMP module is used as a Media Streaming Server. Alternative include Kurento Media Server, Ant Media Server etc.
 
 \subsection{AI Services}
+AI Detection Engines are wrapped into service packages exposing APIs like REST API, WebSocket etc. Since they are independent micro-services requiring web interface, FastAPI is used as a lightweight web framework to proccess HTTP \& WS request and perform the corresponding business logic which includes the prediction by the detection engine, retriving class labels, accuracy values etc.
+
+
 
 \begin{figure}[ht!]
 	\centering
