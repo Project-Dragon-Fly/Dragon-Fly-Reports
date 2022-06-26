@@ -44,7 +44,7 @@ NGINX is used as a load balancer, gateway and Reverse proxy. It handles request 
 Media Streaming Server is used to provide secure live stream camera footage access to the user using HLS (HTTP Live Streaming) over SSL. It relays the stream recieved to the client. Nginx with RTMP module is used as a Media Streaming Server. Alternative include Kurento Media Server, Ant Media Server etc.
 
 \subsection{AI Services}
-AI Detection Engines are wrapped into service packages exposing APIs like REST API, WebSocket etc. Since they are independent micro-services requiring web interface, FastAPI is used as a lightweight web framework to proccess HTTP \& WS request and perform the corresponding business logic which includes the prediction by the detection engine, retriving class labels, accuracy values etc.
+AI Detection Engines are wrapped into service packages exposing APIs like REST API, WebSocket etc. Since they are independent micro-services requiring web interface, FastAPI is used as a lightweight web framework to proccess HTTP \& WS request and perform the corresponding business logic which includes the prediction by the detection engine, retriving class labels, accuracy values etc. As detection and processing completes, responses are pushed to the client using WebSocket connection and saved to the database.
 
 \subsection{Datastore}
 Data store includes storage backend and databases. 
@@ -58,7 +58,7 @@ Data store includes storage backend and databases.
 	Video Files, Frames, Snapshots, thumbnails and other static files are organised and storage in persistant storage backend. Public static files are served directly through NGINX.
 
 
-
+\subsection{Camera Feed Live Streaming}
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{Images/live_stream_arch}
@@ -66,7 +66,9 @@ Data store includes storage backend and databases.
 	\label{fig:livestreamarch}
 \end{figure}
 
-\subsection*{Technology Stack}
+
+
+\section{Technology Stack}
 Development is primarily done in Python, while JavaScript is utilized for front-end scripting.
 
 The list of frameworks and libraries used represent those which are widely utilized or have significant impact in the development.
