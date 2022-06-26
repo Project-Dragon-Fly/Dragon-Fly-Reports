@@ -12,20 +12,20 @@
 
 
 \subsection{Existing CCTV Infrastructure}
-Modern Infrasturcture of CCTV (Closed-Circuit Television) Video surveillance system pan out to a Network connected IP camera, which is streamed to an NVR (Network Video Recorder). Popular streaming protocols like RTSP (Realtime Streaming Protocol), RTSPS (RTSP over SSL), RTMP (Real-Time Messaging Protocol) are utlised in most IP cameras and NVR. 
+Modern Infrastructure of CCTV (Closed-Circuit Television) Video surveillance system pan out to a Network connected IP camera, which is streamed to an NVR (Network Video Recorder). Popular streaming protocols like RTSP (Realtime Streaming Protocol), RTSPS (RTSP over SSL), RTMP (Real-Time Messaging Protocol) are utilized in most IP cameras and NVR. 
 
-NVR stores the footage and is usually removed after specificed period based on the storage capacity of the NVR and number of cameras connected. On most NVR firmares, playback and downloading of recording is only provided by builtin web interface, or propriotary softwares bundled, which are known to be poorly implemented. Some NVR interface only works with full features on outdated Internet Explorer after installing plug-in.
+NVR stores the footage and is usually removed after specified period based on the storage capacity of the NVR and number of cameras connected. On most NVR firmware, playback and downloading of recording is only provided by builtin web interface, or proprietary softwares bundled, which are known to be poorly implemented. Some NVR interface only works with full features on outdated Internet Explorer after installing plug-in.
 
 Live streams of NVR and IP cameras can be accessed easily as RSTP stream using the network ip address, which can be played by any client in the same network.
 
 \subsection{VPN based Secure network access}
-CCTV Video surveillance systems utlise restricted closed network isolated from the internet, to reduce cyber attack vectors and unauthorised usage. Unsecured connection and system usage can compromise the security of network. 
-Constructing a VPN (Virtual Private Network) split tunnel can enable secure communication interface to the network over unsecured channels. Wiregaurd, distributed in Linux Kernel, is utlised in our design to create VPN interface with very less overhead and very high performance.
+CCTV Video surveillance systems utilize restricted closed network isolated from the internet, to reduce Cyber attack vectors and unauthorized usage. Unsecured connection and system usage can compromise the security of network. 
+Constructing a VPN (Virtual Private Network) split tunnel can enable secure communication interface to the network over unsecured channels. Wireguard, distributed in Linux Kernel, is utilized in our design to create VPN interface with very less overhead and very high performance.
 
 \subsection{Video Stream Ingestion}
-Video stream from NVR and IP camera are ingested to our system by Stream Handler and FrameGen module for proccessing using OpenCV. FrameGen module reads the live stream of cameras specified and save frames to storage backend with timestamp and signature as metadata. It ignores dead frames, blacklisted and idle frames and saves only required frames thereby reducing storage requirement.
+Video stream from NVR and IP camera are ingested to our system by Stream Handler and FrameGen module for processing using OpenCV. FrameGen module reads the live stream of cameras specified and save frames to storage backend with timestamp and signature as metadata. It ignores dead frames, blacklisted and idle frames and saves only required frames thereby reducing storage requirement.
 
-Additionaly, FFmpeg is used for on-the-fly transcoding (transcoding while streaming) of live RSTP stream (which is a pull stream) from IP camera and NVR, to RTMP stream (which is a push stream) to NGINX Media Server. A stream key is attached to each stream which NGINX relays as HLS (HTTP Live Streaming) securely over SSL (Secure Socket Layer) to client browser of the authenticated user containing stream key.   
+Additionally, FFmpeg is used for on-the-fly transcoding (transcoding while streaming) of live RSTP stream (which is a pull stream) from IP camera and NVR, to RTMP stream (which is a push stream) to NGINX Media Server. A stream key is attached to each stream which NGINX relays as HLS (HTTP Live Streaming) securely over SSL (Secure Socket Layer) to client browser of the authenticated user containing stream key.   
 
 \subsection{Storage Backend}
 For local development setup, Linux File system is used as storage backend. For production grade setup MinIO Server is used as the storage backend to provide secure redundancy, segregated access, and hybrid multi-tenant enterprise grade system. Each file is identified by the path and object id and can be retrieved by authorized users. 
@@ -33,7 +33,7 @@ For local development setup, Linux File system is used as storage backend. For p
 Video Files, Frames, Snapshots, thumbnails and other static files are organised and storage in persistant storage backend. Public static files are served directly through NGINX.
 
 
-\begin{figure}
+\begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{Images/live_stream_arch}
 	\caption{Camera Feed Live Streaming}
@@ -68,7 +68,7 @@ The list of frameworks and libraries used represent those which are widely utili
 	\item PostgreSQL: As Relational Database
 	\item WireGaurd: Creating secured encrypted VPN tunnel to NVR infrastructure network
 	\item FFmpeg: For on-the-fly video transcoding to relay Live Camera RSTP feed to nginx as RTMP ingress feed
-	\item OpenCV: Image Proccessing in FrameGen module and handling camera feed.
+	\item OpenCV: Image Processing in FrameGen module and handling camera feed.
 	\item WebSocket: Bidirectional server-push communication with user
 	\item OpenPlayerJS: Browser-based HLS video stream playback
 	\item MinIO: File and object storage back-end to replicate Amazon Web Service S3.
@@ -77,7 +77,7 @@ The list of frameworks and libraries used represent those which are widely utili
 \end{itemize}
 
 
-\begin{figure}
+\begin{figure}[h!]
 	\centering
 	\begin{subfigure}[b]{0.8\linewidth}
 		\centering
@@ -95,7 +95,7 @@ The list of frameworks and libraries used represent those which are widely utili
 	\caption{Workflow pipeline}
 \end{figure}
 
- 
+\lipsum[1]
 
 
 \section{Camera Network}
@@ -122,7 +122,6 @@ The camera feed is obtained from a project deployed by Center for Information, C
 
 
 \section{UI Design}
-
 \lipsum[1]
 
 \begin{figure}[!ht]
@@ -159,8 +158,6 @@ The camera feed is obtained from a project deployed by Center for Information, C
 	\end{subfigure}
 	\caption{UI Design}
 \end{figure}
-
-\lipsum[1]
 
 \section{AI Model}
 \subsection*{YOLOv4}
@@ -223,7 +220,7 @@ DeepSORT is utilized to assign unique id to each object in an continuous frame. 
 
 \subsection{Image Dictionary}
 In-order to facilitate correct labeling of images, a concept called Image Dictionary is introduced. Image Dictionary is a hierarchical classification of images. Each type can have its sub-type. A visual representation is also provided for each type. It is build using D3 JS.
-\begin{figure}[!ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{Images/image_dictionary}
 	\caption{Image Dictionary}
