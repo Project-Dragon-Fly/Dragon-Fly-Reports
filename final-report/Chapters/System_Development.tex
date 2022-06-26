@@ -33,6 +33,14 @@ For local development setup, Linux File system is used as storage backend. For p
 Video Files, Frames, Snapshots, thumbnails and other static files are organised and storage in persistant storage backend. Public static files are served directly through NGINX.
 
 
+\subsection{Control \& Management Backend}
+
+\subsection{Load Balancer \& Reverse Proxy}
+
+\subsection{Media Streaming Server}
+
+\subsection{AI Services}
+
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{Images/live_stream_arch}
@@ -159,7 +167,7 @@ The camera feed is obtained from a project deployed by Center for Information, C
 	\caption{UI Design}
 \end{figure}
 
-\section{AI Model}
+\section{AI Detection Engine}
 \subsection*{YOLOv4}
 YOLOv4 model is used for the detection of vehicles. Transfer learning was conducted on the AI model that significantly reduced the training time required. Transfer learning is the process of using a pre-trained model and changing its parameter to learn new/fine tuned concept. Pre-trained weight was extracted from the official YOLOv4 repository \cite{darknet} that used MS COCO dataset to train 80 classes. Parameter tuning is performed which are detailed in table \ref{tab:yolo_parameter}.
 
