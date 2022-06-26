@@ -163,4 +163,92 @@ In-order to facilitate correct labeling of images, a concept called Image Dictio
 
 
 \section{Algorithm}
-\lipsum[1-3]
+\begin{breakablealgorithm}
+	\caption{Process and store detections $\forall$ camera}
+	~~ \\\textbf{INPUT} : $video$, $camProp$
+	\\ \textbf{OUTPUT} : $id$, $class$, $bbox$, $time$, $featureTensor$ $\rightarrow$ $Database$
+	\begin{algorithmic}[1]
+		\State $FPS \gets video.FPS$
+		\State $time \gets camProp.startTime$
+		\State $tracker \gets \Call{Tracker}{cosineMetric}$
+		\ForAll{$frame \in video.frames$}
+			\State $names, bboxes, scores \gets \Call{YOLOv4}{frame}$
+			\State $features \gets \Call{encoder}{frame,bboxes}$ \Comment{feature extraction}
+			\State $detections \gets []$
+			\For{$i \in \Call{lenght}{names}$}
+				\State $detections[i] \gets (names[i],bboxes[i],scores[i],features[i])$
+			\EndFor
+			\State $\Call{tracker.predict}{\space}$
+			\State $\Call{tracker.update}{detections}$ \Comment{DeepSORT assigns id}
+			
+			\ForAll{$track \in tracker.tracks$}
+				\If{$not \Call{track.isConfirmed}{\space}$} \Comment{Skip first few frame to ensure objects presence}
+					\State Continue
+				\ElsIf{$track.time_since_update \ge 1$} \Comment{Missing object in current frame}
+					\State Continue
+				\EndIf
+				\State $\Call{Database.Write}{track.id, track.class, track.tbwh, time, track.feature}$
+			\EndFor
+			\State $time \gets time + \frac{1}{FPS}$
+		\EndFor
+	\end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+	\caption{Route building}
+	~~ \\\textbf{INPUT} : $vehicleClass$, $initialCamera$, $startTime$, $endTime$
+	\\ \textbf{OUTPUT} : $route$
+	\begin{algorithmic}[1]	
+		\State $terminate \gets FALSE$
+		\State $route \gets []$
+		\State $vehicleList \gets []$
+		\State $currentCam \gets initialCamera$
+		
+		\State $DB \gets currentCam.DataBase$  \Comment{Find the vehicle}
+		\State $DB \gets \Call{DB.filter}{name=vehicleClass}$
+		\State $fDB \gets \Call{DB.filter}{time \geq startTime}$
+		\State $fDB \gets \Call{fDB.filter}{time \leq endTime}$
+		
+		\ForAll{ $vid \in \Call{uniqueID}{fDB}$}
+			\State $vDB \gets \Call{DB.filter}{id = vid}$
+			\State $enterTime \gets \Call{min}{vDB.time}$
+			\State $exitTime \gets \Call{max}{vDB.time}$
+			\State $\Call{vehicleList.append}{vid,enterTime,exitTime,currentCam}$
+		\EndFor
+		
+		\While{$terminate \neq FALSE$}	\Comment{Search route iteratively}
+			\If{$\Call{count}{vehicleList} == 0$}
+				\State $terminate \gets TRUE$
+				\State Break
+			\ElsIf{$\Call{count}{vehicleList} == 1$}
+				\State $seletedVehicle \gets vehicleList[0]$
+			\Else
+				\State $selectedVehicle \gets \Call{UserSelect}{vehicleList}$
+			\EndIf
+			\State $\Call{route.append}{selectedVehicle}$ \Comment{Add to route list}
+			
+			\State $addedCam \gets selectedVehicle.camera$
+			\State $nextCameras \gets \Call{addedCam.neighbor}{radius=1KM}$
+			\State $vehicleList \gets []$
+			
+
+			\For{$currentCam \in nextCameras$}
+				\State $startTime \gets selectedVehicle.exitTime + \Call{minTravelTime}{addedCam,currentCam}$
+				\State $endTime \gets selectedVehicle.exitTime + \Call{maxTravelTime}{addedCam,currentCam}$
+							
+				\State $DB \gets currentCam.DataBase$  \Comment{Find the vehicles}
+				\State $DB \gets \Call{DB.filter}{name=vehicleClass}$
+				\State $fDB \gets \Call{DB.filter}{time \geq startTime}$
+				\State $fDB \gets \Call{fDB.filter}{time \leq endTime}$
+				
+				\ForAll{ $vid \in \Call{uniqueID}{fDB}$}
+					\State $vDB \gets \Call{DB.filter}{id = vid}$
+					\State $enterTime \gets \Call{min}{vDB.time}$
+					\State $exitTime \gets \Call{max}{vDB.time}$
+					\State $\Call{vehicleList.append}{vid,enterTime,exitTime,currentCam}$
+				\EndFor	
+			\EndFor
+		\EndWhile
+		\Call{print}{route} \Comment{The final result}
+	\end{algorithmic}
+\end{breakablealgorithm}
