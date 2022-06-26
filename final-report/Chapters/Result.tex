@@ -3,6 +3,9 @@
 \section{Camera Network}
 Camera Network provided a great asset in acquiring the relevant dataset. The system is aimed at real-time processing of multiple camera feed. However, minor steps backs are faced during the footage capture. The support for network is maintained by a Chinese video surveillance manufacturer, abbreviated as UNV. The software interface have lower support for live streaming of footage, which leads to complex method of acquiring frame. The camera occasionally provides with corrupted frames (see figure \ref{fig:corrupted}), leading to false detection. Camera footage is extracted at 25 FPS, $1920*1080$ px.
 
+% Blacklisting of currupted framed used 
+% No streaming or playback api for recorded video
+
 \begin{figure}[!ht]
 	\includegraphics[width=0.32\linewidth]{Images/camera_footage/corrupted1} \hfill
 	\includegraphics[width=0.32\linewidth]{Images/camera_footage/corrupted2} \hfill
@@ -77,6 +80,8 @@ Proper Siamese Network was unable to construct, as the layers of yolov4 models w
 	\item User needs to visually inspect the similarity of target vehicle across the network, Siamese network is not completely realized.
 	\item Limited user parameters for vehicle description. All parameter needs to be provided for search to begin.
 	\item Heavy system resource utilization. About 5GB of GPU is being completely reserved and locked by YOLO model. Parsing larger network require higher RAM and CPU utilization. Larger volume of footage needs to be processed and stored.
+	% GPU not enabled with Nvidia MPS
+	% No MultiGPU system available
 \end{itemize}
 
 
