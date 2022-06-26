@@ -39,6 +39,11 @@ Video Files, Frames, Snapshots, thumbnails and other static files are organised 
 
 
 \subsection{Control \& Management Backend}
+Control and Management Backend is a Django based Monolith application containing User Authenication, Business Logic, and Presentation layer logic. It handles user requests, and initiates corresponding pipeline or trigger micro-service procces. It also serves as the interface to primary PostgreSQL relational database, through and Object Relation Mapping (ORM) layer in django, handling all DB queries and proccesing business logic.
+
+When a user launches the app, the request is proccessed by middlewares in django, checking security, user authenticity and other preproccessing tasks. The sanitiesed request is handled by the corresponding view that procceses the business logic, and renders the template and returns the response to user.
+
+
 
 \subsection{Load Balancer \& Reverse Proxy}
 
