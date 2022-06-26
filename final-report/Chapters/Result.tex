@@ -69,7 +69,16 @@ YOLOv4 model is trained with 1559 images for 9 classes as illustrated in table \
 Ground Truth dataset was not available to quantize the result. However, via visual inception, it was found that the model was able to assign correct ID number to most of the vehicles. It was observed that such an increase in accuracy was observed due to the presence of Kalman filtering algorithm. The deep matrix association for humans was trigger only at the presence of humans. It lead to a mismatch where traditional Kalman filter tries to re-Id the bounding boxes, where as deepSORT tries to match human description leading to wrong answer. The anomaly can be strongly seen in public transport bus. Building of deep matrix for vehicle can improve the system.
 
 \section{Siamese Network}
-Proper Siamese Network was unable to construct, as the layers of yolov4 models was not able to selectively extract. The YOLOV4 model have tight coupling between layers, with multiple output and input vectors. The model is originally implement in Darknet.  This provided hindrance during the extraction of layers using keras and python. Ground Truth dataset is not able to quantize its accuracy
+Proper Siamese Network was unable to construct, as the layers of yolov4 models was not able to selectively extract. The YOLOV4 model have tight coupling between layers, with multiple output and input vectors. The model is originally implement in Darknet.  This provided hindrance during the extraction of layers using keras and python.
+
+\section{Other Limitations}
+\begin{itemize}
+	\item Current detection rate is about 19.1 FPS, which is not ideal to process multiple camera footage concurrently in real-time.
+	\item The model was not trained to extract color class labels. Use of K-means gives poor realization of vehicle color. Background colors are also being extracted in K-means.
+	\item User needs to visually inspect the similarity of target vehicle across the network, Siamese network is not completely realized.
+	\item Limited user parameters for vehicle description. All parameter needs to be provided for search to begin.
+	\item Heavy system resource utilization. About 5GB of GPU is being completely reserved and locked by YOLO model. Parsing larger network require higher RAM and CPU utilization. Larger volume of footage needs to be processed and stored.
+\end{itemize}
 
 
 
