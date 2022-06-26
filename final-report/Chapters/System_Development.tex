@@ -25,6 +25,11 @@ Live streams of NVR and IP cameras can be accessed easily as RSTP stream using t
 CCTV Video surveillance systems utlise restricted closed network isolated from the internet, to reduce cyber attack vectors and unauthorised usage. Unsecured connection and system usage can compromise the security of network. 
 Constructing a VPN (Virtual Private Network) split tunnel can enable secure communication interface to the network over unsecured channels. Wiregaurd, distributed in Linux Kernel, is utlised in our design to create VPN interface with very less overhead and very high performance.
 
+\subsection{Video Stream Ingestion}
+Video stream from NVR and IP camera are ingested to our system by Stream Handler and FrameGen module for proccessing using OpenCV.
+
+Additionaly, FFmpeg is used for over transcode live RSTP stream from IP camera and NVR, 
+
 
 \begin{figure}
 	\centering
