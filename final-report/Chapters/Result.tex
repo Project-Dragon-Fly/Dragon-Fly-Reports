@@ -79,7 +79,10 @@ Proper Siamese Network was unable to construct, as the layers of yolov4 models w
 	\item The model was not trained to extract color class labels. Use of K-means gives poor realization of vehicle color. Background colors are also being extracted in K-means.
 	\item User needs to visually inspect the similarity of target vehicle across the network, Siamese network is not completely realized.
 	\item Limited user parameters for vehicle description. All parameter needs to be provided for search to begin.
-	\item Heavy system resource utilization. About 5GB of GPU is being completely reserved and locked by YOLO model. Parsing larger network require higher RAM and CPU utilization. Larger volume of footage needs to be processed and stored.
+	\item Heavy system resource utilization. Parsing larger network require higher RAM and CPU utilization. Larger volume of footage needs to be processed and stored.
+	\item GPU with Nvidia MPS enabled or support for GPU partitioning was not available. So even simple model running in CUDA allocates whole GPU memory. About 5GB of GPU is being completely reserved and locked by YOLO model. 
+	\item No Multi-GPU systems to fully utlise multiple parallel instance of AI Engine in same server.
+	\item On the fly transcoding was needed to convert HEVC RTSP stream to RTMP stream for Nginx Media Server, consuming significant resources.
 	% GPU not enabled with Nvidia MPS
 	% No MultiGPU system available
 \end{itemize}
