@@ -16,38 +16,37 @@
 
 
 \subsection*{Technology Stack}
-A hybrid microservice architecture is utlised to gain the scalability and decouple AI engine and services to serve web request efficiently, while ensuring quicker and simpler development and deployment. Each independent services are created as a separate moduluar microservice which can be integrated based on requirement and infrastructure availability.
+A hybrid microservice architecture is utilized to gain the scalability and decouple AI engine and services to serve web request efficiently, while ensuring quicker and simpler development and deployment. Each independent services are created as a separate modular microservice which can be integrated based on requirement and infrastructure availability.
 
-Development is primarily done in Python, while JavaScript is utlised for frontend scripting.
+Development is primarily done in Python, while JavaScript is utilized for front-end scripting.
 
-The list of frameworks and libraries used represent those which are widely utlised or have significant imapact in the development.
+The list of frameworks and libraries used represent those which are widely utilized or have significant impact in the development.
 
-Languages:
+\subsubsection*{Languages}
 \begin{itemize}
-	\item Python (Primary Language): Used in all serverside code.
-	\item JavaScript: Used in frontend Scripting, WebSocket Browser Client, OpenPlayerJS
+	\item Python (Primary Language): Used in all server-side code.
+	\item JavaScript: Used in front-end Scripting, Web-socket Browser Client, OpenPlayerJS
 \end{itemize}
 
-Frameworks:
+\subsubsection*{Frameworks}
 \begin{itemize}
-	\item Django: Backend Server
-	\item FastAPI: AI Engine API web framework and WebSocket Abstraction
-	\item TensorFlow and YOLO: AI inferencing
-	\item 
+	\item Django: Back-end Server
+	\item FastAPI: AI Engine API web framework and Web-socket Abstraction
+	\item Keras \& TensorFlow: AI inferencing
+	\item Darknet \& CUDA: Training Model
 \end{itemize}
 
-Other:
+\subsubsection*{Other Tools}
 \begin{itemize}
 	\item Nginx: Used as web server and reverse proxy for handling request, serving static files, proxying request to application servers.
 	\item Nginx RTMP Module: Used to enhance Nginx to be used as a Media Streaming Server
 	\item PostgreSQL: As Relational Database
-	\item Wiregaurd: Creating secured encrypted VPN tunnel to NVR infrastructure network
+	\item WireGaurd: Creating secured encrypted VPN tunnel to NVR infrastructure network
 	\item FFmpeg: For on-the-fly video transcoding to relay Live Camera RSTP feed to nginx as RTMP ingress feed
 	\item OpenCV: Image Proccessing in FrameGen module and handling camera feed.
 	\item WebSocket: Bidirectional server push communication with user
 	\item OpenPlayerJS: Browser-based HLS video stream playback
-	\item MinIO: File and object storage backend to replicate Amazon Web Service S3.
-
+	\item MinIO: File and object storage back-end to replicate Amazon Web Service S3.
 \end{itemize}
 
 
