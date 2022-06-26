@@ -115,7 +115,12 @@ The list of frameworks and libraries used represent those which are widely utili
 
 \subsection*{Pipline 1}
 In this mode of operation, all camera assigned will have a dedicated AI engine instance (or kubernetes pod) running continously. The results along with neccessary meta data like timstamps, are saved into the database. When user queries a description, query is proccessed to match features from the database, and route is computed. 
-This is costly in terms of resource requirements as each camera will have a dedicated AI engine instance, requiring significant amount of computational power. Without MPS (Multi Proccess Service), GPU's required may result in significant expense.
+This is costly in terms of resource requirements as each camera will have a dedicated AI engine instance, requiring significant amount of computational power. Without Nvidia MPS (Multi Proccess Service) or GPU partitioning, number of GPU's required may result in significant expense.
+
+\subsection*{Pipline 2}
+In this mode of operation, cameras are set to ON_DEMAND proccessing mode. When a user queries a description, the system first check if the matching camera is proccessed or not. If it is already proccessed data is taken from database otherwise the camera processing taks is pushed to Job queue. The consumer reqularly consumes from Job Queue, when hardware resources are free. When Queue is consumed, the a new detection engine instance is launched, and the detection task is initiated and results are stored in the database. When task is completed, the results are fetched from user, the whole system would be dead.
+This is much less resource intensive but requires complex infrastructure. Queue helps in load balancing, and allows usage of less GPUs and servers to proccess large number of camera networks.
+
 
 \begin{figure}[h!]
 	\centering
