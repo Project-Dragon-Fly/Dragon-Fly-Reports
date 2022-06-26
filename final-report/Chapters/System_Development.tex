@@ -3,7 +3,6 @@
 
 
 \section{System Architecture}
-\lipsum[1-2]
 
 \begin{figure}
 	\centering
@@ -12,7 +11,6 @@
 	\label{fig:architecturehighlevel}
 \end{figure}
 
-\lipsum[1-2]
 
 \subsection{Existing CCTV Infrastructure}
 Modern Infrasturcture of CCTV (Closed-Circuit Television) Video surveillance system pan out to a Network connected IP camera, which is streamed to an NVR (Network Video Recorder). Popular streaming protocols like RTSP (Realtime Streaming Protocol), RTSPS (RTSP over SSL), RTMP (Real-Time Messaging Protocol) are utlised in most IP cameras and NVR. 
@@ -30,6 +28,8 @@ Video stream from NVR and IP camera are ingested to our system by Stream Handler
 
 Additionaly, FFmpeg is used for on-the-fly transcoding (transcoding while streaming) of live RSTP stream (which is a pull stream) from IP camera and NVR, to RTMP stream (which is a push stream) to NGINX Media Server. A stream key is attached to each stream which NGINX relays as HLS (HTTP Live Streaming) securely over SSL (Secure Socket Layer) to client browser of the authenticated user containing stream key.   
 
+\subsection{Storage Backend}
+For local development setup, Linux File system is used as storage backend. For production grade setup MinIO Server is used as the storage backend to provide redundancy, seggregated access, and hybrid multi-host system
 
 
 \begin{figure}
@@ -92,7 +92,6 @@ The list of frameworks and libraries used represent those which are widely utili
 	\caption{Workflow pipeline}
 \end{figure}
 
-\lipsum[1-2]
  
 
 
