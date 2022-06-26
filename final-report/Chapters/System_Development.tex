@@ -111,6 +111,12 @@ The list of frameworks and libraries used represent those which are widely utili
 \end{itemize}
 
 
+\section{Workflow Pipeline}
+
+\subsection*{Pipline 1}
+In this mode of operation, all camera assigned will have a dedicated AI engine instance (or kubernetes pod) running continously. The results along with neccessary meta data like timstamps, are saved into the database. When user queries a description, query is proccessed to match features from the database, and route is computed. 
+This is costly in terms of resource requirements as each camera will have a dedicated AI engine instance, requiring significant amount of computational power. Without MPS (Multi Proccess Service), GPU's required may result in significant expense.
+
 \begin{figure}[h!]
 	\centering
 	\begin{subfigure}[b]{0.8\linewidth}
