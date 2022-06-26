@@ -16,7 +16,7 @@ Camera Network provided a great asset in acquiring the relevant dataset. The sys
 \end{figure}
 
 \section{YOLOv4}
-YOLOv4 model is trained with 1559 images for 9 classes as illustrated in table \ref{tab:dataset_sum1}. Model accuracy is easy calculated by Darknet and is shown in table \ref{tab:yolo_matrix} and \ref{tag:yolo_score}. The model, in the deployment ran at slower speed of about 19.1 FPS. The decrease in speed is due to the unwanted processing of dead/corrupted frame. Speed can also be improved by reducing the yolo network size, compromising accuracy.
+YOLOv4 model is trained with 1559 images for 9 classes as illustrated in table \ref{tab:dataset_sum1}. Model accuracy is easily calculated by Darknet and is shown in table \ref{tab:yolo_matrix} and \ref{tag:yolo_score}. The model, in the deployment ran at slower speed of about 19.1 FPS. The decrease in speed is due to the unwanted processing of dead/corrupted frame. Speed can also be improved by reducing the yolo network size, compromising accuracy.
 
 \begin{table}[!ht]
 	\centering
@@ -66,9 +66,9 @@ YOLOv4 model is trained with 1559 images for 9 classes as illustrated in table \
 
 
 \section{DeepSORT}
-Ground Truth dataset was not available to quantize the result. However, via visual inception, it was found that the model was able to assign correct ID number to most of the vehicles. I was observed that such an increase in accuracy was observed due to the presence of Kalman filtering algorithm. The deep matrix association for humans was trigger only at the presence of humans. It lead to a mismatch where traditional Kalman filter tries to re-Id the bounding boxes, where as deepSORT tries to match human description leading to wrong answer. The anomaly can be strongly seen in public transport bus. Building of deep matrix for vehicle can improve the system.
+Ground Truth dataset was not available to quantize the result. However, via visual inception, it was found that the model was able to assign correct ID number to most of the vehicles. It was observed that such an increase in accuracy was observed due to the presence of Kalman filtering algorithm. The deep matrix association for humans was trigger only at the presence of humans. It lead to a mismatch where traditional Kalman filter tries to re-Id the bounding boxes, where as deepSORT tries to match human description leading to wrong answer. The anomaly can be strongly seen in public transport bus. Building of deep matrix for vehicle can improve the system.
 
-\subsection{Siamese Network}
+\section{Siamese Network}
 Proper Siamese Network was unable to construct, as the layers of yolov4 models was not able to selectively extract. The YOLOV4 model have tight coupling between layers, with multiple output and input vectors. The model is originally implement in Darknet.  This provided hindrance during the extraction of layers using keras and python. Ground Truth dataset is not able to quantize its accuracy
 
 
