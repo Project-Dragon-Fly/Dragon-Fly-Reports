@@ -3,6 +3,11 @@
 
 \section{System Architecture}
 
+A hybrid microservice architecture is utilized to gain the scalability and decouple AI engine and services to serve web request efficiently, while ensuring quicker and simpler development and deployment. Each independent services are created as a separate modular microservice which can be integrated based on requirement and infrastructure availability.
+Client side request are sent handled by the system with nginx serving as a gateway \& reverse proxy. SSL encryption is added when accessing system outside trusted LAN network. 
+
+When scaling up the system to handle large number of requests, Redis is used to provide caching, and as a additional faster volatile in-memory database. Message Queue is implemented using RabbitMQ, to utlise second workflow pipleline to allow large number of camera network to be tasked for proccessing in limited hardware infrastructure.
+
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\linewidth]{Images/architecture_high_level}
@@ -49,8 +54,6 @@ Video Files, Frames, Snapshots, thumbnails and other static files are organised 
 \end{figure}
 
 \subsection*{Technology Stack}
-A hybrid microservice architecture is utilized to gain the scalability and decouple AI engine and services to serve web request efficiently, while ensuring quicker and simpler development and deployment. Each independent services are created as a separate modular microservice which can be integrated based on requirement and infrastructure availability.
-
 Development is primarily done in Python, while JavaScript is utilized for front-end scripting.
 
 The list of frameworks and libraries used represent those which are widely utilized or have significant impact in the development.
