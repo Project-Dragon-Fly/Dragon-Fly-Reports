@@ -65,8 +65,14 @@ Data store includes storage backend and databases.
 	\caption{Camera Feed Live Streaming}
 	\label{fig:livestreamarch}
 \end{figure}
+Initially, WireGaurd split tunnel is created and connection to CCTV network is established. Then FFmpeg instances are initiated as celery task, by passing streaming keys. The FFmpeg transcodes RSTP (HEVC) video to RTMP (flv) video, wich is pushed to Nginx media server live ingress. Nginx relays the transcoded video to browser client using HLS stream requesting the correct secret key. This enables secure streaming of video efficiently.
 
-
+\subsubsection*{Current Issues}
+\begin{itemize}
+	\item Sharing streaming key to all users, can cause breach of security and unauthorised users may access 
+	\item Not sharing streaming key would result in multiple FFmpeg instances transcoding same footage.
+\end{itemize}
+The solution would be utlising media servers like Kurento Media Server which have ability to create groups/rooms and assign users to room using API calls.
 
 \section{Technology Stack}
 Development is primarily done in Python, while JavaScript is utilized for front-end scripting.
