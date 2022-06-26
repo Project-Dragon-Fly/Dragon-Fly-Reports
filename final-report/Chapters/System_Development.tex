@@ -29,7 +29,7 @@ Video stream from NVR and IP camera are ingested to our system by Stream Handler
 Additionaly, FFmpeg is used for on-the-fly transcoding (transcoding while streaming) of live RSTP stream (which is a pull stream) from IP camera and NVR, to RTMP stream (which is a push stream) to NGINX Media Server. A stream key is attached to each stream which NGINX relays as HLS (HTTP Live Streaming) securely over SSL (Secure Socket Layer) to client browser of the authenticated user containing stream key.   
 
 \subsection{Storage Backend}
-For local development setup, Linux File system is used as storage backend. For production grade setup MinIO Server is used as the storage backend to provide secure redundancy, segregated access, and hybrid multi-tenant system. Each file is identified by the path and object id and can be retrieved by authorized users.
+For local development setup, Linux File system is used as storage backend. For production grade setup MinIO Server is used as the storage backend to provide secure redundancy, segregated access, and hybrid multi-tenant enterprise grade system. Each file is identified by the path and object id and can be retrieved by authorized users. 
 
 
 \begin{figure}
