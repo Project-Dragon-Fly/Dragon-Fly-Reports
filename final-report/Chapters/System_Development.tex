@@ -32,18 +32,10 @@ Video stream from NVR and IP camera are ingested to our system by Stream Handler
 
 Additionally, FFmpeg is used for on-the-fly transcoding (transcoding while streaming) of live RSTP stream (which is a pull stream) from IP camera and NVR, to RTMP stream (which is a push stream) to NGINX Media Server. A stream key is attached to each stream which NGINX relays as HLS (HTTP Live Streaming) securely over SSL (Secure Socket Layer) to client browser of the authenticated user containing stream key.   
 
-\subsection{Storage Backend}
-For local development setup, Linux File system is used as storage backend. For production grade setup MinIO Server is used as the storage backend to provide secure redundancy, segregated access, and hybrid multi-tenant enterprise grade system. Each file is identified by the path and object id and can be retrieved by authorized users. 
-
-Video Files, Frames, Snapshots, thumbnails and other static files are organised and storage in persistant storage backend. Public static files are served directly through NGINX.
-
-
 \subsection{Control \& Management Backend}
 Control and Management Backend is a Django based Monolith application containing User Authenication, Business Logic, and Presentation layer logic. It handles user requests, and initiates corresponding pipeline or trigger micro-service procces. It also serves as the interface to primary PostgreSQL relational database, through and Object Relation Mapping (ORM) layer in django, handling all DB queries and proccesing business logic.
 
 When a user launches the app, the request is proccessed by middlewares in django, checking security, user authenticity and other preproccessing tasks. The sanitiesed request is handled by the corresponding view that procceses the business logic, and renders the template and returns the response to user.
-
-
 
 \subsection{Load Balancer \& Reverse Proxy}
 NGINX is used as a load balancer, gateway and Reverse proxy. It handles request from client, preferably encrypted over SSL, proxies to corresponding upstream server or application server. It directly serves static files.
@@ -53,6 +45,17 @@ Media Streaming Server is used to provide secure live stream camera footage acce
 
 \subsection{AI Services}
 AI Detection Engines are wrapped into service packages exposing APIs like REST API, WebSocket etc. Since they are independent micro-services requiring web interface, FastAPI is used as a lightweight web framework to proccess HTTP \& WS request and perform the corresponding business logic which includes the prediction by the detection engine, retriving class labels, accuracy values etc.
+
+\subsection{Datastore}
+Data store includes storage backend and databases. 
+
+	\subsubsection{Database}
+	Primary database used is PostgreSQL relational database. All the configuration details, user details, authentication informations are stored in this database. Database is accessed using ORM, enabling modeling of real world information using objects which are stored as relation in sql tables.
+
+	\subsubsection{Storage Backend}
+	For local development setup, Linux File system is used as storage backend. For production grade setup MinIO Server is used as the storage backend to provide secure redundancy, segregated access, and hybrid multi-tenant enterprise grade system. Each file is identified by the path and object id and can be retrieved by authorized users. 
+
+	Video Files, Frames, Snapshots, thumbnails and other static files are organised and storage in persistant storage backend. Public static files are served directly through NGINX.
 
 
 
