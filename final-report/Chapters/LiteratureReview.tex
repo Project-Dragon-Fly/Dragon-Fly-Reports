@@ -159,6 +159,14 @@ Both of the above algorithms(R-CNN \& Fast R-CNN) uses selective search to find 
 YOLO \cite{yolo_core_paper} is a clever CNN for doing object detection in real-time. The algorithm applies a single neural network to the full image, and then divides the image into regions and predicts bounding boxes and probabilities for each region. These bounding boxes are weighted by the predicted probabilities. The algorithm “only looks once” at the image in the sense that it requires only one forward propagation pass through the neural network to make predictions. After non-max suppression it then outputs recognized objects together with the bounding boxes. With YOLO, a single CNN simultaneously predicts multiple bounding boxes and class probabilities for those boxes. YOLO trains on full images and directly optimizes detection performance. 
 
 \subsubsection{Steps}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\linewidth]{Images/yolo_steps}
+	\caption{YOLO detection steps}
+	%SRC: https://towardsdatascience.com/evolution-of-yolo-yolo-version-1-afb8af302bd2
+\end{figure}
+
 \begin{enumerate}
 	\item YOLO is based on the idea of segmenting an image into smaller images. The image is split into a square grid of dimensions $S*S$. The cell in which the center of an object resides, is the cell responsible for detecting that object. 
 	
@@ -170,12 +178,6 @@ YOLO \cite{yolo_core_paper} is a clever CNN for doing object detection in real-t
 	
 	\item Each prediction from a grid cell will be of shape $C + B * 5$. Because there are $S*S$ grid cells in each image, the overall prediction of the model is a tensor of shape $S*S*(C+B*5)$.
 \end{enumerate}
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.7\linewidth]{Images/yolo_steps}
-	\caption{YOLO detection steps}
-	%SRC: https://towardsdatascience.com/evolution-of-yolo-yolo-version-1-afb8af302bd2
-\end{figure}
 
 \subsubsection{Architecture}
 The YOLO model is made up of three key components:

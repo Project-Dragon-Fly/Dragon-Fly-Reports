@@ -6,146 +6,12 @@
 A hybrid microservice architecture is utilized to gain the scalability and decouple AI engine and services to serve web request efficiently, while ensuring quicker and simpler development and deployment. Each independent services are created as a separate modular microservice which can be integrated based on requirement and infrastructure availability.
 Client side request are sent handled by the system with nginx serving as a gateway \& reverse proxy. SSL encryption is added when accessing system outside trusted LAN network. 
 
-When scaling up the system to handle large number of requests, Redis is used to provide caching, and as a additional faster volatile in-memory database. Message Queue is implemented using RabbitMQ, to utlise second workflow pipleline to allow large number of camera network to be tasked for proccessing in limited hardware infrastructure.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\linewidth]{Images/architecture_high_level}
-	\caption{High level system architecture}
-	\label{fig:architecturehighlevel}
-\end{figure}
+When scaling up the system to handle large number of requests, Redis is used to provide caching, and as a additional faster volatile in-memory database. Message Queue is implemented using RabbitMQ, to utlise second workflow pipleline to allow large number of camera network to be tasked for processing in limited hardware infrastructure.
 
 
-\subsection{Existing CCTV Infrastructure}
-Modern Infrastructure of CCTV (Closed-Circuit Television) Video surveillance system pan out to a Network connected IP camera, which is streamed to an NVR (Network Video Recorder). Popular streaming protocols like RTSP (Realtime Streaming Protocol), RTSPS (RTSP over SSL), RTMP (Real-Time Messaging Protocol) are utilized in most IP cameras and NVR. 
+\subsection{CCTV Infrastructure}
 
-NVR stores the footage and is usually removed after specified period based on the storage capacity of the NVR and number of cameras connected. On most NVR firmware, playback and downloading of recording is only provided by builtin web interface, or proprietary softwares bundled, which are known to be poorly implemented. Some NVR interface only works with full features on outdated Internet Explorer after installing plug-in.
-
-Live streams of NVR and IP cameras can be accessed easily as RSTP stream using the network ip address, which can be played by any client in the same network.
-
-\subsection{VPN based Secure network access}
-CCTV Video surveillance systems utilize restricted closed network isolated from the internet, to reduce Cyber attack vectors and unauthorized usage. Unsecured connection and system usage can compromise the security of network. 
-Constructing a VPN (Virtual Private Network) split tunnel can enable secure communication interface to the network over unsecured channels. Wireguard, distributed in Linux Kernel, is utilized in our design to create VPN interface with very less overhead and very high performance.
-
-\subsection{Video Stream Ingestion}
-Video stream from NVR and IP camera are ingested to our system by Stream Handler and FrameGen module for processing using OpenCV. FrameGen module reads the live stream of camera and save frames to storage backend with timestamp and signature as metadata. It ignores dead frames, blacklisted and idle frames and saves only required frames thereby reducing storage requirement. FrameGen Module is launched as a cron job using scheduled Celery Beat task, configured to proccess specified list of camera for specified duration regularly. 
-
-Additionally, FFmpeg is used for on-the-fly transcoding (transcoding while streaming) of live RSTP stream (which is a pull stream) from IP camera and NVR, to RTMP stream (which is a push stream) to NGINX Media Server. A stream key is attached to each stream which NGINX relays as HLS (HTTP Live Streaming) securely over SSL (Secure Socket Layer) to client browser of the authenticated user containing stream key.   
-
-\subsection{Control \& Management Backend}
-Control and Management Backend is a Django based Monolith application containing User Authenication, Business Logic, and Presentation layer logic. It handles user requests, and initiates corresponding pipeline or trigger micro-service procces. It also serves as the interface to primary PostgreSQL relational database, through and Object Relation Mapping (ORM) layer in django, handling all DB queries and proccesing business logic.
-
-When a user launches the app, the request is proccessed by middlewares in django, checking security, user authenticity and other preproccessing tasks. The sanitiesed request is handled by the corresponding view that procceses the business logic, and renders the template and returns the response to user.
-
-\subsection{Load Balancer \& Reverse Proxy}
-NGINX is used as a load balancer, gateway and Reverse proxy. It handles request from client, preferably encrypted over SSL, proxies to corresponding upstream server or application server. It directly serves static files.
-
-\subsection{Media Streaming Server}
-Media Streaming Server is used to provide secure live stream camera footage access to the user using HLS (HTTP Live Streaming) over SSL. It relays the stream recieved to the client. Nginx with RTMP module is used as a Media Streaming Server. Alternative include Kurento Media Server, Ant Media Server etc.
-
-\subsection{AI Services}
-AI Detection Engines are wrapped into service packages exposing APIs like REST API, WebSocket etc. Since they are independent micro-services requiring web interface, FastAPI is used as a lightweight web framework to proccess HTTP \& WS request and perform the corresponding business logic which includes the prediction by the detection engine, retriving class labels, accuracy values etc. As detection and processing completes, responses are pushed to the client using WebSocket connection and saved to the database.
-
-\subsection{Datastore}
-Data store includes storage backend and databases. 
-
-	\subsubsection{Database}
-	Primary database used is PostgreSQL relational database. All the configuration details, user details, authentication informations are stored in this database. Database is accessed using ORM, enabling modeling of real world information using objects which are stored as relation in sql tables.
-
-	\subsubsection{Storage Backend}
-	For local development setup, Linux File system is used as storage backend. For production grade setup MinIO Server is used as the storage backend to provide secure redundancy, segregated access, and hybrid multi-tenant enterprise grade system. Each file is identified by the path and object id and can be retrieved by authorized users. 
-
-	Video Files, Frames, Snapshots, thumbnails and other static files are organised and storage in persistant storage backend. Public static files are served directly through NGINX.
-
-
-\subsection{Camera Feed Live Streaming}
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=0.8\linewidth]{Images/live_stream_arch}
-	\caption{Camera Feed Live Streaming}
-	\label{fig:livestreamarch}
-\end{figure}
-Initially, WireGaurd split tunnel is created and connection to CCTV network is established. Then FFmpeg instances are initiated as celery task, by passing streaming keys. The FFmpeg transcodes RSTP (HEVC) video to RTMP (flv) video, wich is pushed to Nginx media server live ingress. Nginx relays the transcoded video to browser client using HLS stream requesting the correct secret key. This enables secure streaming of video efficiently.
-
-\subsubsection*{Current Issues}
-\begin{itemize}
-	\item Sharing streaming key to all users, can cause breach of security and unauthorised users may access 
-	\item Not sharing streaming key would result in multiple FFmpeg instances transcoding same footage.
-\end{itemize}
-The solution would be utlising media servers like Kurento Media Server which have ability to create groups/rooms and assign users to room using API calls.
-
-\section{Technology Stack}
-Development is primarily done in Python, while JavaScript is utilized for front-end scripting.
-
-The list of frameworks and libraries used represent those which are widely utilized or have significant impact in the development.
-
-\subsubsection*{Languages}
-\begin{itemize}
-	\item Python (Primary Language): Used in all server-side code.
-	\item JavaScript: Used in front-end Scripting, WebSocket Browser Client, OpenPlayerJS
-\end{itemize}
-
-\subsubsection*{Frameworks}
-\begin{itemize}
-	\item Django: Back-end Server
-	\item FastAPI: API web framework for micro-service like AI Engine and provides WebSocket Abstraction
-	\item Keras \& TensorFlow: AI inferencing
-	\item Darknet \& CUDA: Training Model
-\end{itemize}
-
-\subsubsection*{Other Tools}
-\begin{itemize}
-	\item Nginx: Used as web server and reverse proxy for handling request, serving static files, proxying request to application servers.
-	\item Nginx RTMP Module: Used to enhance Nginx to be used as a Media Streaming Server
-	\item PostgreSQL: As Relational Database
-	\item WireGaurd: Creating secured encrypted VPN tunnel to NVR infrastructure network
-	\item FFmpeg: For on-the-fly video transcoding to relay Live Camera RSTP feed to nginx as RTMP ingress feed
-	\item OpenCV: Image Processing in FrameGen module and handling camera feed.
-	\item WebSocket: Bidirectional server-push communication with user
-	\item OpenPlayerJS: Browser-based HLS video stream playback
-	\item MinIO: File and object storage back-end to replicate Amazon Web Service S3.
-	\item Docker: For containerisation of services
-	\item GitHub Action: For Continous Integration and Deployment (CI/CD) pipleline
-	\item Gunicorn: WSGI Application server to handle django WSGI application.
-	\item Uvicorn: ASGI Application server to handle FastAPI and other ASGI applications. 
-\end{itemize}
-
-
-\section{Workflow Pipeline}
-
-\subsection*{Pipline 1}
-In this mode of operation, all camera assigned will have a dedicated AI engine instance (or kubernetes pod) running continously. The results along with neccessary meta data like timstamps, are saved into the database. When user queries a description, query is proccessed to match features from the database, and route is computed. 
-This is costly in terms of resource requirements as each camera will have a dedicated AI engine instance, requiring significant amount of computational power. Without Nvidia MPS (Multi Proccess Service) or GPU partitioning, number of GPU's required may result in significant expense.
-
-\subsection*{Pipline 2}
-In this mode of operation, cameras are set to ON_DEMAND proccessing mode. When a user queries a description, the system first check if the matching camera is proccessed or not. If it is already proccessed data is taken from database otherwise the camera processing taks is pushed to Job queue. The consumer reqularly consumes from Job Queue, when hardware resources are free. When Queue is consumed, the a new detection engine instance is launched, and the detection task is initiated and results are stored in the database. When task is completed, the results are fetched from user, the whole system would be dead.
-This is much less resource intensive but requires complex infrastructure. Queue helps in load balancing, and allows usage of less GPUs and servers to proccess large number of camera networks.
-
-
-\begin{figure}[h!]
-	\centering
-	\begin{subfigure}[b]{0.8\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{Images/pipeline1}
-		\caption{pipeline1}
-		\label{fig:pipeline1}
-	\end{subfigure}
-
-	\begin{subfigure}[b]{0.8\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{Images/pipeline2}
-		\caption{pipeline2}
-		\label{fig:pipeline2}
-	\end{subfigure}
-	\caption{Workflow pipeline}
-\end{figure}
-
-\lipsum[1]
-
-
-\section{Camera Network}
-The camera feed is obtained from a project deployed by Center for Information, Communication and Educational Technology (CICET), Government College of Engineering Kannur. Under the project entitled "Third eye", a virtual network was established covering an area of 350 $KM^2$, connecting 9 institutes. Using the existing cable network, various camera at installed allowing easy and secure storage and streaming. Currently the project houses holds about 190 cameras. Excess to these footage if obtained by secured virtual private junction.
-
+\subsubsection{CICET network}
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=\linewidth]{Images/camera-network}
@@ -157,18 +23,114 @@ The camera feed is obtained from a project deployed by Center for Information, C
 	\centering
 	\includegraphics[width=0.32\linewidth]{Images/camera_footage/footage1} \hfill
 	\includegraphics[width=0.32\linewidth]{Images/camera_footage/footage2} \hfill
-%	\includegraphics[width=0.32\linewidth]{Images/camera_footage/footage3} \\
-%	\vspace{3mm}
-%	\includegraphics[width=0.32\linewidth]{Images/camera_footage/footage4} \hfill
+	%	\includegraphics[width=0.32\linewidth]{Images/camera_footage/footage3} \\
+	%	\vspace{3mm}
+	%	\includegraphics[width=0.32\linewidth]{Images/camera_footage/footage4} \hfill
 	\includegraphics[width=0.32\linewidth]{Images/camera_footage/night1} \hfill
-%	\includegraphics[width=0.32\linewidth]{Images/camera_footage/night2}
+	%	\includegraphics[width=0.32\linewidth]{Images/camera_footage/night2}
 	\caption{Sample camera footage}
 \end{figure}
 
+The camera feed is obtained from a project deployed by Center for Information, Communication and Educational Technology (CICET), Government College of Engineering Kannur. Under the project entitled "Third eye", a virtual network was established covering an area of 350 $KM^2$, connecting 9 institutes. Using the existing cable network, various camera at installed allowing easy and secure storage and streaming. Currently the project houses holds about 190 cameras. Access to these footage are obtained by secured virtual private network.
+
+
+\subsubsection{VPN based Secure network access}
+Modern Infrastructure of CCTV (Closed-Circuit Television) Video surveillance system pan out to a Network connected IP camera, which is streamed to an NVR (Network Video Recorder). CCTV Video surveillance systems utilize restricted closed network isolated from the internet, to reduce Cyber attack vectors and unauthorized usage.  VPN (Virtual Private Network) split tunnel enables secure communication interface to the network over unsecured channels. Wireguard, distributed in Linux Kernel, is utilized for the creation of VPN interface with very less overhead and very high performance.
+
+NVR stores the footage and is usually removed after specified period based on the storage capacity of the NVR and number of cameras connected. On most NVR firmware, playback and downloading of recording is only provided by builtin web interface, or proprietary softwares bundled, which are known to be poorly implemented. Some NVR interface only works with full features on outdated Internet Explorer after installing plug-in.
+
+Live streams of NVR and IP cameras can be accessed easily as RSTP stream using the network ip address, which can be played by any client in the same network.
+
+
+\subsubsection{Video Stream Ingestion}
+Popular streaming protocols like RTSP (Realtime Streaming Protocol), RTSPS (RTSP over SSL), RTMP (Real-Time Messaging Protocol) are utilized in most IP cameras and NVR. 
+Video stream from NVR and IP camera are ingested by Stream Handler and FrameGen module for processing using OpenCV. FrameGen module reads the live stream of camera and save frames to storage backend with timestamp and signature as metadata. It ignores dead frames, blacklisted and idle frames, saving only required frames thereby reducing storage requirement. FrameGen Module is launched as a cron job using scheduled Celery Beat task, configured to process specified list of camera for specified duration regularly. 
+
+Additionally, FFmpeg is used for on-the-fly transcoding (transcoding while streaming) of live RSTP stream (which is a pull stream) from IP camera and NVR, to RTMP stream (which is a push stream) to NGINX Media Server. A stream key is attached to each stream which NGINX relays as HLS (HTTP Live Streaming) securely over SSL (Secure Socket Layer) to client browser of the authenticated user containing stream key.   
+
+\subsection{Control \& Management Backend}
+Control and Management Backend is a Django based Monolith application containing User Authentication, Business Logic, and Presentation layer logic. It handles user requests, and initiates corresponding pipeline or trigger micro-service process. It also serves as the interface to primary PostgreSQL relational database, through and Object Relation Mapping (ORM) layer in Django, handling all DB queries and processing business logic.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Images/architecture_high_level}
+	\caption{High level system architecture}
+	\label{fig:architecturehighlevel}
+\end{figure}
+
+When a user launches the app, the request is processed by middlewares in django, checking security, user authenticity and other pre-processing tasks. The sanitized request is handled by the corresponding view that processes the business logic, and renders the template and returns the response to user.
+
+\subsubsection{Load Balancer \& Reverse Proxy}
+NGINX is used as a load balancer, gateway and Reverse proxy. It handles request from client, preferably encrypted over SSL, proxies to corresponding upstream server or application server. It directly serves static files.
+
+\subsubsection{Media Streaming Server}
+Media Streaming Server is used to provide secure live stream camera footage access to the user using HLS (HTTP Live Streaming) over SSL. It relays the stream received to the client. Nginx with RTMP module is used as a Media Streaming Server. Alternative include Kurento Media Server, Ant Media Server etc.
+
+\subsubsection{AI Services}
+AI Detection Engines are wrapped into service packages exposing APIs like REST API, WebSocket etc. Being an independent micro-services requiring web interface, FastAPI is used as a lightweight web framework to process HTTP \& WS request and perform the corresponding business logic which includes the prediction by the detection engine, retrieving class labels, accuracy values etc. As detection and processing completes, responses are pushed to the client using WebSocket connection and saved to the database.
+
+\subsubsection{Datastore}
+Data store includes storage backend and databases. 
+	\begin{enumerate}
+		\item Database \\
+		Primary database used is PostgreSQL relational database. All the configuration details, user details, authentication information are stored in this database. Database is accessed using ORM, enabling modeling of real world information using objects which are stored as relation in SQL tables.
+		
+		\item Storage Backend \\
+		For local development setup, Linux File system is used as storage backend. For production grade setup MinIO Server is used as the storage backend to provide secure redundancy, segregated access, and hybrid multi-tenant enterprise grade system. Each file is identified by the path and object id and can be retrieved by authorized users.
+		
+		Video Files, Frames, Snapshots, thumbnails and other static files are organized and storage in persistent storage backend. Public static files are served directly through NGINX.
+	\end{enumerate}
+
+	
+
+
+\subsection{Camera Feed Live Streaming}
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Images/live_stream_arch}
+	\caption{Camera Feed Live Streaming}
+	\label{fig:livestreamarch}
+\end{figure}
+Initially, WireGuard split tunnel is created and connection to CCTV network is established. Then FFmpeg instances are initiated as celery task, by passing streaming keys. The FFmpeg transcodes RSTP (HEVC) video to RTMP (flv) video, which is pushed to Nginx media server live ingress. Nginx relays the transcoded video to browser client using HLS stream requesting the correct secret key. This enables secure streaming of video efficiently.
+
+\section{Workflow Pipeline}
+
+\begin{figure}[ht!]
+	\centering
+	\begin{subfigure}[b]{0.8\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{Images/pipeline1}
+		\caption{pipeline1}
+		\label{fig:pipeline1}
+	\end{subfigure}
+	
+	\begin{subfigure}[b]{0.8\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{Images/pipeline2}
+		\caption{pipeline2}
+		\label{fig:pipeline2}
+	\end{subfigure}
+	\caption{Workflow pipeline}
+\end{figure}
+
+\subsection*{Pipeline 1}
+In this mode of operation, all camera assigned will have a dedicated AI engine instance (or kubernetes pod) running continuously. The results along with necessary meta data like timestamps, are saved into the database. When user queries a description, query is processed to match features from the database, and route is computed. 
+
+This is costly in terms of resource requirements as each camera will have a dedicated AI engine instance, requiring significant amount of computational power. Without Nvidia MPS (Multi Process Service) or GPU partitioning, number of GPU's required may result in significant expense.
+
+\subsection*{Pipeline 2}
+In this mode of operation, cameras are set to \textit{ON\_DEMAND proccessing mode}. When a user queries a description, the system first check if the matching camera is processed or not. If it is already processed data is taken from database otherwise the camera processing task is pushed to Job queue. The consumer regularly consumes from Job Queue, when hardware resources are free. When Queue is consumed, the a new detection engine instance is launched, and the detection task is initiated and results are stored in the database. When task is completed, the results are fetched from user, the whole system would be dead.
+
+This is much less resource intensive but requires complex infrastructure. Queue helps in load balancing, and allows usage of less GPUs and servers to process large number of camera networks.
+
+
+
+
 
 \section{UI Design}
-User experience is a critical function to realise potential of any system, so an elegant minimalistic design is used to develop the system. Screenshots of the User Interface design is provide in figure \ref{fig:home}.
-User can search queries through the home page in simple words, on submiting the query user is treated with a list of detection, of which the user selects the most optimal choice, the shortlist selection proccess continues. The route generated is displayed in realtime in the routemap. The camera live stream page shows the authorized camera feed.
+User experience is a critical function to realize potential of any system, so an elegant minimalistic design is used to develop the system. Screenshots of the User Interface design is provide in figure \ref{fig:home}.
+
+User can search queries through the home page in simple words, on submitting the query, user is treated with a list of detection, of which the user selects the most optimal choice, the shortlist selection process continues. The route generated is displayed in real-time in the route map. The camera live stream page shows the authorized camera feed.
 \begin{figure}[!ht]
 	\centering
 	\begin{subfigure}[b]{0.48\linewidth}
@@ -187,13 +149,13 @@ User can search queries through the home page in simple words, on submiting the 
 		\centering
 		\includegraphics[width=\linewidth]{Images/UI/result}
 		\caption{Result}
-		\label{fig:result}
+		\label{fig:result1}
 	\end{subfigure} \hfill
 	\begin{subfigure}[b]{0.48\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{Images/UI/live_stream}
 		\caption{Camera Live Stream}
-		\label{fig:result}
+		\label{fig:result2}
 	\end{subfigure} \hfill
 	\begin{subfigure}[b]{0.48\linewidth}
 		\centering
@@ -205,7 +167,7 @@ User can search queries through the home page in simple words, on submiting the 
 \end{figure}
 
 \section{AI Detection Engine}
-\subsection*{YOLOv4}
+\subsection{YOLOv4}
 YOLOv4 model is used for the detection of vehicles. Transfer learning was conducted on the AI model that significantly reduced the training time required. Transfer learning is the process of using a pre-trained model and changing its parameter to learn new/fine tuned concept. Pre-trained weight was extracted from the official YOLOv4 repository \cite{darknet} that used MS COCO dataset to train 80 classes. Parameter tuning is performed which are detailed in table \ref{tab:yolo_parameter}.
 
 \begin{table}[!ht]
@@ -260,7 +222,7 @@ The dataset for training was collected at two different sources. Kaggle provided
 	\end{tabular}
 \end{table}
 
-\subsection*{DeepSORT}
+\subsection{DeepSORT}
 DeepSORT is utilized to assign unique id to each object in an continuous frame. The implementation is directly extracted from the article of AIGuysCode \cite{theaiguyscode_deepsort}. The given model tries to extract human features as the deep matrix. No modification are made as Kalman filter provides greater accuracy. However, learning the deep matrix of vehicles can further increase accuracy and aid in siamese network.
 
 \subsection{Image Dictionary}
@@ -309,31 +271,30 @@ In-order to facilitate correct labeling of images, a concept called Image Dictio
 	~~ \\\textbf{INPUT} : $vehicleClass$, $initialCamera$, $startTime$, $endTime$
 	\\ \textbf{OUTPUT} : $route$
 	\begin{algorithmic}[1]	
-		\State $terminate \gets FALSE$
+		\Function{filterVehicle}{vehicleList,currentCam,startTime,endTime} \Comment{Support function}
+			\State $DB \gets currentCam.DataBase$
+			\State $DB \gets \Call{DB.filter}{name=vehicleClass}$
+			\State $fDB \gets \Call{DB.filter}{time \geq startTime}$
+			\State $fDB \gets \Call{fDB.filter}{time \leq endTime}$
+			
+			\ForAll{ $vid \in \Call{uniqueID}{fDB}$}
+				\State $vDB \gets \Call{DB.filter}{id = vid}$
+				\State $enterTime \gets \Call{min}{vDB.time}$
+				\State $exitTime \gets \Call{max}{vDB.time}$
+				\State $\Call{vehicleList.append}{vid,enterTime,exitTime,currentCam}$
+			\EndFor
+		\EndFunction
+		
 		\State $route \gets []$
 		\State $vehicleList \gets []$
-		\State $currentCam \gets initialCamera$
+		\State \Call{filterVehicle}{vehicleList,initialCamera,startTime,endTime} \Comment{Parse camera}
+			
 		
-		\State $DB \gets currentCam.DataBase$  \Comment{Find the vehicle}
-		\State $DB \gets \Call{DB.filter}{name=vehicleClass}$
-		\State $fDB \gets \Call{DB.filter}{time \geq startTime}$
-		\State $fDB \gets \Call{fDB.filter}{time \leq endTime}$
-		
-		\ForAll{ $vid \in \Call{uniqueID}{fDB}$}
-			\State $vDB \gets \Call{DB.filter}{id = vid}$
-			\State $enterTime \gets \Call{min}{vDB.time}$
-			\State $exitTime \gets \Call{max}{vDB.time}$
-			\State $\Call{vehicleList.append}{vid,enterTime,exitTime,currentCam}$
-		\EndFor
-		
-		\While{$terminate \neq FALSE$}	\Comment{Search route iteratively}
-			\If{$\Call{count}{vehicleList} == 0$}
-				\State $terminate \gets TRUE$
-				\State Break
-			\ElsIf{$\Call{count}{vehicleList} == 1$}
+		\While{$\Call{count}{vehicleList} \ge 0$}
+			\If{$\Call{count}{vehicleList} == 1$}
 				\State $seletedVehicle \gets vehicleList[0]$
 			\Else
-				\State $selectedVehicle \gets \Call{UserSelect}{vehicleList}$
+				\State $selectedVehicle \gets \Call{UserSelect}{vehicleList}$ \Comment{Prompt user interaction}
 			\EndIf
 			\State $\Call{route.append}{selectedVehicle}$ \Comment{Add to route list}
 			
@@ -341,24 +302,49 @@ In-order to facilitate correct labeling of images, a concept called Image Dictio
 			\State $nextCameras \gets \Call{addedCam.neighbor}{radius=1KM}$
 			\State $vehicleList \gets []$
 			
-
-			\For{$currentCam \in nextCameras$}
+			\For{$currentCam \in nextCameras$} \Comment{Loop surrounding camera}
 				\State $startTime \gets selectedVehicle.exitTime + \Call{minTravelTime}{addedCam,currentCam}$
 				\State $endTime \gets selectedVehicle.exitTime + \Call{maxTravelTime}{addedCam,currentCam}$
-							
-				\State $DB \gets currentCam.DataBase$  \Comment{Find the vehicles}
-				\State $DB \gets \Call{DB.filter}{name=vehicleClass}$
-				\State $fDB \gets \Call{DB.filter}{time \geq startTime}$
-				\State $fDB \gets \Call{fDB.filter}{time \leq endTime}$
 				
-				\ForAll{ $vid \in \Call{uniqueID}{fDB}$}
-					\State $vDB \gets \Call{DB.filter}{id = vid}$
-					\State $enterTime \gets \Call{min}{vDB.time}$
-					\State $exitTime \gets \Call{max}{vDB.time}$
-					\State $\Call{vehicleList.append}{vid,enterTime,exitTime,currentCam}$
-				\EndFor	
+				\State \Call{filterVehicle}{vehicleList,currentCam,startTime,endTime} \Comment{Parse camera}
 			\EndFor
 		\EndWhile
 		\State \Call{print}{route} \Comment{The final result}
 	\end{algorithmic}
 \end{breakablealgorithm}
+
+\section{Technology Stack}
+Development is primarily done in Python, while JavaScript is utilized for front-end scripting.
+
+The list of frameworks and libraries used represent those which are widely utilized or have significant impact in the development.
+
+\subsubsection*{Languages}
+\begin{itemize}
+	\item Python (Primary Language): Used in all server-side code.
+	\item JavaScript: Used in front-end Scripting, WebSocket Browser Client, OpenPlayerJS
+\end{itemize}
+
+\subsubsection*{Frameworks}
+\begin{itemize}
+	\item Django: Back-end Server
+	\item FastAPI: API web framework for micro-service like AI Engine and provides WebSocket Abstraction
+	\item Keras \& TensorFlow: AI inferencing
+	\item Darknet \& CUDA: Training Model
+\end{itemize}
+
+\subsubsection*{Other Tools}
+\begin{itemize}
+	\item Nginx: Used as web server and reverse proxy for handling request, serving static files, proxying request to application servers.
+	\item Nginx RTMP Module: Used to enhance Nginx to be used as a Media Streaming Server
+	\item PostgreSQL: As Relational Database
+	\item WireGaurd: Creating secured encrypted VPN tunnel to NVR infrastructure network
+	\item FFmpeg: For on-the-fly video transcoding to relay Live Camera RSTP feed to nginx as RTMP ingress feed
+	\item OpenCV: Image Processing in FrameGen module and handling camera feed.
+	\item WebSocket: Bidirectional server-push communication with user
+	\item OpenPlayerJS: Browser-based HLS video stream playback
+	\item MinIO: File and object storage back-end to replicate Amazon Web Service S3.
+	\item Docker: For containerisation of services
+	\item GitHub Action: For Continous Integration and Deployment (CI/CD) pipleline
+	\item Gunicorn: WSGI Application server to handle django WSGI application.
+	\item Uvicorn: ASGI Application server to handle FastAPI and other ASGI applications. 
+\end{itemize}
