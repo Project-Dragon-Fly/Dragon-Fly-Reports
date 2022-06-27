@@ -4,7 +4,7 @@
 \section{System Architecture}
 
 A hybrid microservice architecture is utilized to gain the scalability and decouple AI engine and services to serve web request efficiently, while ensuring quicker and simpler development and deployment. Each independent services are created as a separate modular microservice which can be integrated based on requirement and infrastructure availability.
-Client side request are sent handled by the system with nginx serving as a gateway \& reverse proxy. SSL encryption is added when accessing system outside trusted LAN network. 
+Client side request are sent handled by the system with nginx serving as a gateway \& reverse proxy. TLS/SSL encryption is added when accessing system outside trusted LAN network. 
 
 When scaling up the system to handle large number of requests, Redis is used to provide caching, and as a additional faster volatile in-memory database. Message Queue is implemented using RabbitMQ, to utlise second workflow pipleline to allow large number of camera network to be tasked for processing in limited hardware infrastructure.
 
@@ -95,7 +95,7 @@ Data store includes storage backend and databases.
 	\caption{Camera Feed Live Streaming}
 	\label{fig:livestreamarch}
 \end{figure}
-Initially, WireGuard split tunnel is created and connection to CCTV network is established. Then FFmpeg instances are initiated as celery task, by passing streaming keys. The FFmpeg transcodes RSTP (HEVC) video to RTMP (flv) video, which is pushed to Nginx media server live ingress. Nginx relays the transcoded video to browser client using HLS stream requesting the correct secret key. This enables secure streaming of video efficiently.
+Initially, WireGuard split tunnel is created and connection to CCTV network is established. Then FFmpeg instances are initiated as celery task, by passing streaming keys. The FFmpeg transcodes RSTP (HEVC) video to RTMP (flv) video, which is pushed to Nginx media server live ingress. Nginx relays the transcoded video to browser client using HLS stream (if SSL is configured, HLS over TSL/SSL) requesting the correct secret key. This enables secure streaming of video efficiently.
 
 \section{Workflow Pipeline}
 
