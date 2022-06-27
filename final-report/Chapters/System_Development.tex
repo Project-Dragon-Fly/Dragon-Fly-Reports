@@ -290,7 +290,7 @@ In-order to facilitate correct labeling of images, a concept called Image Dictio
 		\State \Call{filterVehicle}{vehicleList,initialCamera,startTime,endTime} \Comment{Parse camera}
 			
 		
-		\While{$\Call{count}{vehicleList} \ge 0$}
+		\While{$\Call{count}{vehicleList} \ge 0 $ AND $\Call{userInterrupt}{\space} == FALSE$}
 			\If{$\Call{count}{vehicleList} == 1$}
 				\State $seletedVehicle \gets vehicleList[0]$
 			\Else
