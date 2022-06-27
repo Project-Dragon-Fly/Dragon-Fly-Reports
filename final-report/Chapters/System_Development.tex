@@ -95,7 +95,7 @@ Data store includes storage backend and databases.
 	\caption{Camera Feed Live Streaming}
 	\label{fig:livestreamarch}
 \end{figure}
-Initially, WireGuard split tunnel is created and connection to CCTV network is established. Then FFmpeg instances are initiated as celery task, by passing streaming keys. The FFmpeg transcodes RSTP (HEVC) video to RTMP (flv) video, which is pushed to Nginx media server live ingress. Nginx relays the transcoded video to browser client using HLS stream (if SSL is configured, HLS over TSL/SSL) requesting the correct secret key. This enables secure streaming of video efficiently.
+Initially, WireGuard split tunnel is created and connection to CCTV network is established. Then FFmpeg instances are initiated as celery task, streaming keys and camera details passed as arguments. The FFmpeg pulls RSTP (x265 HEVC) video stream from the camera network, transcodes on-the-fly to RTMP (flv, x264) video stream, which is pushed to Nginx media server live ingress. Nginx relays the transcoded video stream to browser client using HLS (if SSL is configured, HLS over TSL/SSL) requesting the correct secret key. This enables secure streaming of video efficiently. The transcoding proccess is CPU intensive proccess, requiring higher end servers to real-time transcoding of multiple streams.
 
 \section{Workflow Pipeline}
 
@@ -134,7 +134,7 @@ This is much less resource intensive but requires complex infrastructure. Queue 
 \section{UI Design}
 User experience is a critical function to realize potential of any system, so an elegant minimalistic design is used to develop the system. Screenshots of the User Interface design is provide in figure \ref{fig:home}.
 
-User can search queries through the home page in simple words, on submitting the query, user is treated with a list of detection, of which the user selects the most optimal choice, the shortlist selection process continues. The route generated is displayed in real-time in the route map. The camera live stream page shows the authorized camera feed.
+User can search queries through the home page in simple words, on submitting the query, user is treated with a list of detection, of which the user selects the most optimal choice, the shortlist selection process continues. The route generated is displayed in real-time in the route map. The camera live stream page shows the authorized camera feed accessible by the user.
 \begin{figure}[!ht]
 	\centering
 	\begin{subfigure}[b]{0.48\linewidth}
