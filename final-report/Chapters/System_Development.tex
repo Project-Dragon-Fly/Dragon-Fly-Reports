@@ -97,6 +97,13 @@ Data store includes storage backend and databases.
 \end{figure}
 Initially, WireGuard split tunnel is created and connection to CCTV network is established. Then FFmpeg instances are initiated as celery task, streaming keys and camera details passed as arguments. The FFmpeg pulls RSTP (x265 HEVC) video stream from the camera network, transcodes on-the-fly to RTMP (flv, x264) video stream, which is pushed to Nginx media server live ingress. Nginx relays the transcoded video stream to browser client using HLS (if SSL is configured, HLS over TSL/SSL) requesting the correct secret key. This enables secure streaming of video efficiently. The transcoding proccess is CPU intensive proccess, requiring higher end servers to real-time transcoding of multiple streams.
 
+\subsubsection*{Challenges}
+\begin{itemize}
+	\item Sharing streaming key among multiple users, would require same key to be used for extended period of time, which may result in leak of stream key, and access by unauthorized users
+	\item Using dedicated streams for each user by FFmpeg, would require multiple instances of FFmpeg transcoding resulting in significant CPU usage for redundant proccess
+\end{itemize}
+The solution of the challenges would be separating transcoding procces, and streaming process. Using same transcoded video for all the streams. Using specialised media servers like Ant Media Server, and Kurento Media Server, instead of Nginx RTMP module, would lead to better performance and more builtin features and support, including ultra-low latency streaming using WebRTC 
+
 \section{Workflow Pipeline}
 
 \begin{figure}[ht!]
